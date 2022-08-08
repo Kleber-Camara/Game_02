@@ -1,4 +1,5 @@
 from assets.objects.scripts.classes.classe import Classe
+from assets.objects.scripts.skill.skill import Skill
 import pygame.sprite
 import os.path
 
@@ -20,13 +21,15 @@ class Heroes(pygame.sprite.Sprite):
         self._speed = 0
         self._defense = 0
         self._damage = 0
-        self._mana = 0
+        self._max_mana = 0
         self._dodge = 0
-        self._health = 0
+        self._max_health = 0
         self._name = name
         self._lv = lv
         self._xp = 0
         self._max_Xp = 100
+        self._present_mana = 0
+        self._present_health = 0
         self._can_move = 2
         self._classe = Classe()
         self._select = False
@@ -43,9 +46,9 @@ class Heroes(pygame.sprite.Sprite):
         pygame.display.get_surface().blit(self.image, self.rect.topleft)
 
     def _get_Atributes(self) -> None:
-        self._health = self._health + self._classe.get_health()
+        self._max_health = self._max_health + self._classe.get_health()
         self._dodge = self._dodge + self._classe.get_dodge()
-        self._mana = self._mana + self._classe.get_mana()
+        self._max_mana = self._max_mana + self._classe.get_mana()
         self._damage = self._damage + self._classe.get_damage()
         self._defense = self._defense + self._classe.get_defense()
         self._speed = self._speed + self._classe.get_speed()
@@ -54,6 +57,11 @@ class Heroes(pygame.sprite.Sprite):
         self._def_Earth = self._def_Earth + self._classe.get_earth()
         self._def_Wind = self._def_Wind + self._classe.get_wind()
         self._def_Lightning = self._def_Lightning + self._classe.get_lighting()
+
+    def set_Skills_list(self, skill: Skill) -> None:
+        if self.__skills_selected is not None:
+            if len(self.__skills_selected) < 4:
+                self.__skills_selected.append(skill)
 
     def _blit(self, sprite_path: str) -> None:
         image_path = os.path.join(self._path, sprite_path)
@@ -77,6 +85,12 @@ class Heroes(pygame.sprite.Sprite):
     def set_moving(self, moving: bool) -> None:
         self._moving = moving
 
+    def set_present_health(self, health: float) -> None:
+        self._present_health = health
+
+    def set_present_mana(self, mana: float) -> None:
+        self._present_mana = mana
+
     # GETTERS
     def get_move(self) -> int:
         return self._can_move
@@ -93,11 +107,11 @@ class Heroes(pygame.sprite.Sprite):
     def get_name(self) -> str:
         return self._name
 
-    def get_health(self) -> float:
-        return self._health
+    def get_max_health(self) -> float:
+        return self._max_health
 
-    def get_mana(self) -> float:
-        return self._mana
+    def get_max_mana(self) -> float:
+        return self._max_mana
 
     def get_dodge(self) -> int:
         return self._dodge
@@ -128,3 +142,9 @@ class Heroes(pygame.sprite.Sprite):
 
     def get_classe(self) -> Classe:
         return self._classe
+
+    def get_present_health(self) -> float:
+        return self._present_health
+
+    def get_present_mana(self) -> float:
+        return self._present_mana

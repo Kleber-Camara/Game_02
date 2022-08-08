@@ -26,6 +26,9 @@ class Skill(pygame.sprite.Sprite):
     def set_mana_cost(self, cost: int) -> None:
         self._mana_cost = cost
 
+    def set_act_range(self, act: int) -> None:
+        self._act_range = act
+
     def get_name(self) -> str:
         return self._name
 

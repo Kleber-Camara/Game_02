@@ -74,9 +74,10 @@ class Game:
                     self.player.verify_selection(self.mouse.rect)
                     for i in range(len(self.tile_list)):
                         if self.mouse.rect.colliderect(self.tile_list[i].rect) and self.tile_list[i].get_can_move():
-                            if self.player.get_selected().get_moving():
-                                self.player.move_hero(self.tile_list[i].get_x(), self.tile_list[i].get_y())
-                                self.__ui_b.end_arrow()
+                            if self.player.get_selected() is not None:
+                                if self.player.get_selected().get_moving():
+                                    self.player.move_hero(self.tile_list[i].get_x(), self.tile_list[i].get_y())
+                                    self.__ui_b.end_arrow()
                 else:
                     self.player.verify_selection(self.mouse.rect)
             if event.type == pygame.KEYDOWN:
