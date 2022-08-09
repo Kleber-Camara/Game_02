@@ -3,7 +3,7 @@ import pygame.sprite
 
 class Skill(pygame.sprite.Sprite):
 
-    def __init__(self, path: str) -> None:
+    def __init__(self, path: str, lv: int) -> None:
         super().__init__()
         self._blit(path)
         self._name = 'none'
@@ -13,6 +13,7 @@ class Skill(pygame.sprite.Sprite):
         self._act_range = 0
         self._mana_cost = 0
         self._type_skill = 'STANDART'
+        self._lvl_required = lv
 
     def set_name(self, name: str) -> None:
         self._name = name
