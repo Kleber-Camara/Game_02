@@ -1,11 +1,16 @@
+import os.path
+
 import pygame.sprite
+import time
 
 
 class Skill(pygame.sprite.Sprite):
 
-    def __init__(self, path: str, lv: int) -> None:
+    def __init__(self, spritesheet: str, lv: int, end_time: int) -> None:
         super().__init__()
-        self._blit(path)
+        self._skils_animation = os.path.join('assets/sprites/skills')
+        self._skils_animation = os.path.join(self._skils_animation, spritesheet)
+        self._blit(self._skils_animation)
         self._name = 'none'
         self._animation = []
         self._damage = 0
@@ -14,6 +19,15 @@ class Skill(pygame.sprite.Sprite):
         self._mana_cost = 0
         self._type_skill = 'STANDART'
         self._lvl_required = lv
+        self._present_time = time.time()
+        self._end_time = end_time
+
+    def update_skill(self) -> None:
+        if (time.time() - self._present_time) >= self._end_time:
+            del self
+
+    def render(self) -> None:
+        pass
 
     def set_name(self, name: str) -> None:
         self._name = name

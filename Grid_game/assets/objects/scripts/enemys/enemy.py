@@ -1,3 +1,5 @@
+import os.path
+
 import pygame.sprite
 
 
@@ -19,6 +21,7 @@ class Enemy(pygame.sprite.Sprite):
         self._def_wind = 0
         self._def_earth = 0
         self._def_lightning = 0
+        self._animation = []
 
     def update(self) -> None:
         pass
@@ -26,8 +29,16 @@ class Enemy(pygame.sprite.Sprite):
     def render(self) -> None:
         pass
 
-    def _blit(self) -> None:
-        pass
+    def _blit(self, path: str) -> None:
+        enemy = os.path.join('assets\sprites\enemy_sprites', path)
+        try:
+            self.sprite = pygame.image.load(enemy).convert_alpha()
+            w = (self.sprite.get_width()) / 32
+            for i in range(w):
+                self._animation.append(self.sprite.subsurface((i*32, 0), (32, 32)))
+        except Exception as e:
+            print(e)
+            exit()
 
     def set_max_health(self, health: int) -> None:
         self._max_health = health

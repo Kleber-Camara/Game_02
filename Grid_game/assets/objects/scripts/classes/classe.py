@@ -17,7 +17,7 @@ class Classe:
         self._def_Lightning = 0
         self._skill_list = []
         self._path = os.path.join('assets/objects/scripts/')
-        self._skill_list.append(Slash())
+        #self._skill_list.append(Slash())
 
     def get_health(self) -> float:
         return self._health
