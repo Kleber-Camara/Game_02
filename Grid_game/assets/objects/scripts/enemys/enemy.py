@@ -1,5 +1,4 @@
 import os.path
-
 import pygame.sprite
 
 
@@ -27,13 +26,13 @@ class Enemy(pygame.sprite.Sprite):
         pass
 
     def render(self) -> None:
-        pass
+        pygame.display.get_surface().blit(self.image, self.rect.topleft)
 
     def _blit(self, path: str) -> None:
         enemy = os.path.join('assets\sprites\enemy_sprites', path)
         try:
             self.sprite = pygame.image.load(enemy).convert_alpha()
-            w = (self.sprite.get_width()) / 32
+            w = (self.sprite.get_width()) // 32
             for i in range(w):
                 self._animation.append(self.sprite.subsurface((i*32, 0), (32, 32)))
         except Exception as e:

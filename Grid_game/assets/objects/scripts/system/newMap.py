@@ -2,6 +2,7 @@ from assets.objects.scripts.tiles.ground import Ground
 from assets.objects.scripts.tiles.poison import Poison
 from assets.objects.scripts.tiles.water import Water
 from assets.objects.scripts.tiles.rock import Rock
+from assets.objects.scripts.enemys.slime import Slime
 from typing import Any
 from PIL import Image
 import os.path
@@ -12,7 +13,7 @@ class Map:
     def __init__(self, path: str) -> None:
         self.path = path
 
-    def new_map(self, level: str) -> list:
+    def new_map(self, level: str, enemys: list) -> list:
         self.__get_map(level)
         width = self.sprite.width
         height = self.sprite.height
@@ -37,6 +38,11 @@ class Map:
                         tile = Rock(x * 32, y * 32, 32, 32, self.path)
                         tiles.append(tile)
                         print('vermelho')
+                    elif pixel == {250, 0, 0}:
+                        tile = Ground(x * 32, y * 32, 32, 32, self.path)
+                        tiles.append(tile)
+                        slime = Slime(x * 32, y * 32)
+                        enemys.append(slime)
                     else:
                         print('qualquer')
         except Exception as exception:

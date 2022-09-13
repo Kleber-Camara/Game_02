@@ -24,7 +24,8 @@ class Game:
         self.char2 = Char2(self.__sprites_path)
         self.mouse = Mouse(self.__sprites_path)
         self.map = Map(self.__sprites_path)
-        self.tile_list = self.map.new_map('map_test1.png')
+        self.enemy_list = []
+        self.tile_list = self.map.new_map('map_test1.png', self.enemy_list)
         self.player = Player(self.__sprites_path)
         self.player.append_group(self.char)
         self.player.append_group(self.char2)
@@ -43,6 +44,9 @@ class Game:
         self.__display.fill((0, 0, 0))
         for n in range(len(self.tile_list)):
             self.tile_list[n].render()
+        if self.enemy_list is not None:
+            for enemy in self.enemy_list:
+                enemy.render()
         self.player.render()
         self.__ui_b.draw()
         self.mouse.render()

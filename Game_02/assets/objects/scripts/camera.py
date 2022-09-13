@@ -57,7 +57,7 @@ class Camera(pygame.sprite.Group):
     def create_projectile(self, mouse: Mouse, player: Player) -> None:
         #angle = math.degrees(math.atan(mouse.get_x() - (player.get_xPos() - self.offset.x)))
         #angle1 = math.degrees(math.atan(mouse.get_y() - (player.get_yPos() - self.offset.y)))
-        angle = math.atan2( mouse.get_y() - (player.get_yPos() - self.offset.x), mouse.get_x() - (player.get_xPos() - self.offset.y))
+        angle = math.atan2(player.get_yPos() - (mouse.get_y() - self.offset.y), player.get_xPos() - (mouse.get_x() - self.offset.x))
         #print(angle)
         dx = math.cos(angle)
         dy = math.sin(angle)

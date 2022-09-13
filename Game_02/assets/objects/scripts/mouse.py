@@ -27,7 +27,7 @@ class Mouse(pygame.sprite.Sprite):
         self.x, self.y = pygame.mouse.get_pos()
 
     def get_angle(self) -> float:
-        angle = math.degrees(math.atan2(self.x, self.y))
+        angle = math.degrees(math.atan2(self.y, self.x))
         return angle
 
     def __blit(self, path: str) -> None:

@@ -13,7 +13,7 @@ class projectile(pygame.sprite.Sprite):
         self.animation = []
         self.__blit(path, self.type, self.size)
         self.image = pygame.transform.scale(self.image, (16 * 2, 16 * 2))
-        self.spd = 0.9
+        self.spd = 0.4
         self.x = player.get_xPos() + dx
         self.y = player.get_yPos() + dy
         self.rect = self.image.get_rect(topleft=(self.x, self.y))
@@ -22,8 +22,8 @@ class projectile(pygame.sprite.Sprite):
         print(self.x, self.y)
 
     def update_projectile(self, offset: pygame.Vector2) -> None:
-        self.x = (self.x * self.spd)
-        self.y = (self.y * self.spd)
+        self.x = (self.x - offset.x) * self.spd
+        self.y = (self.x - offset.y) * self.spd
 
     def verify_collision(self, world: list[Tile]) -> None:
         for n in range(len(world)):
@@ -34,7 +34,7 @@ class projectile(pygame.sprite.Sprite):
     def render(self) -> None:
         self.rect.topleft = self.x, self.y
         pygame.draw.rect(pygame.display.get_surface(),'yellow',self.rect,4)
-        pygame.display.get_surface().blit(self.image, self.rect.topleft)
+        pygame.display.get_surface().blit(self.image, (self.x, self.y))
 
     def __blit(self, path: str, type: str, size: int) -> None:
         sprite = os.path.join(path, type)
