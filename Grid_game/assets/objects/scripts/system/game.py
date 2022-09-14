@@ -18,6 +18,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.__run = True
         self.__state = {'battle': True, 'management': False}
+        self._turn = False
 
         # variables to test
         self.char = Char1(self.__sprites_path)
@@ -55,7 +56,7 @@ class Game:
     def __game_update(self) -> None:
         self.__get_input()
         self.mouse.update_mouse()
-        self.player.update(self.tile_list)
+        self.player.update(self.tile_list, self.enemy_list)
         if self.__ui_b.get_can_see():
             for i in range(len(self.tile_list)):
                 if self.mouse.rect.colliderect(self.tile_list[i]):

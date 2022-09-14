@@ -56,3 +56,9 @@ class Enemy(pygame.sprite.Sprite):
 
     def set_def(self, defense: int) -> None:
         self._def = defense
+
+    def get_x(self) -> int:
+        return self._x
+
+    def get_y(self) -> int:
+        return self._y

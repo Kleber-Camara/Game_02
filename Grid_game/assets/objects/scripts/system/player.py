@@ -14,7 +14,7 @@ class Player:
         self.__present_selection = None
         self.path = path
 
-    def update(self, tiles: list) -> None:
+    def update(self, tiles: list, enemys: list) -> None:
         if self.__present_selection is not None:
             self.__arrow.move(self.__present_selection.get_x(), self.__present_selection.get_y() - 10)
         if self.__selected and self.__selected.get_moving():
@@ -23,7 +23,13 @@ class Player:
                         32 * self.__selected.get_move()) \
                         and self.__selected.get_y() <= tiles[i].get_y() <= self.__selected.get_y() + (
                         32 * self.__selected.get_move()):
-                    if not isinstance(tiles[i], Rock):
+                    for enemy in enemys:
+                        if enemy.get_x() == tiles[i].get_x() and enemy.get_y() == tiles[i].get_y():
+                            can_move = False
+                            break
+                        else:
+                            can_move = True
+                    if not isinstance(tiles[i], Rock) and can_move:
                         tiles[i].set_can_move()
                     for hero in self.__heroes_list:
                         if hero.get_x() == tiles[i].get_x() and hero.get_y() == tiles[i].get_y():
@@ -32,7 +38,13 @@ class Player:
                         32 * self.__selected.get_move()) \
                         and self.__selected.get_y() >= tiles[i].get_y() >= self.__selected.get_y() - (
                         32 * self.__selected.get_move()):
-                    if not isinstance(tiles[i], Rock):
+                    for enemy in enemys:
+                        if enemy.get_x() == tiles[i].get_x() and enemy.get_y() == tiles[i].get_y():
+                            can_move = False
+                            break
+                        else:
+                            can_move = True
+                    if not isinstance(tiles[i], Rock) and can_move:
                         tiles[i].set_can_move()
                     for hero in self.__heroes_list:
                         if hero.get_x() == tiles[i].get_x() and hero.get_y() == tiles[i].get_y():
@@ -41,7 +53,13 @@ class Player:
                         32 * self.__selected.get_move()) \
                         and self.__selected.get_y() <= tiles[i].get_y() <= self.__selected.get_y() + (
                         32 * self.__selected.get_move()):
-                    if not isinstance(tiles[i], Rock):
+                    for enemy in enemys:
+                        if enemy.get_x() == tiles[i].get_x() and enemy.get_y() == tiles[i].get_y():
+                            can_move = False
+                            break
+                        else:
+                            can_move = True
+                    if not isinstance(tiles[i], Rock) and can_move:
                         tiles[i].set_can_move()
                     for hero in self.__heroes_list:
                         if hero.get_x() == tiles[i].get_x() and hero.get_y() == tiles[i].get_y():
@@ -50,7 +68,13 @@ class Player:
                         32 * self.__selected.get_move()) \
                         and self.__selected.get_y() > tiles[i].get_y() >= self.__selected.get_y() - (
                         32 * self.__selected.get_move()):
-                    if not isinstance(tiles[i], Rock):
+                    for enemy in enemys:
+                        if enemy.get_x() == tiles[i].get_x() and enemy.get_y() == tiles[i].get_y():
+                            can_move = False
+                            break
+                        else:
+                            can_move = True
+                    if not isinstance(tiles[i], Rock) and can_move:
                         tiles[i].set_can_move()
                     for hero in self.__heroes_list:
                         if hero.get_x() == tiles[i].get_x() and hero.get_y() == tiles[i].get_y():
