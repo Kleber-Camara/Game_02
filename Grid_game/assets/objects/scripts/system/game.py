@@ -54,7 +54,13 @@ class Game:
         pygame.display.update()
 
     def __game_update(self) -> None:
-        self.__get_input()
+        if self.turn_verify():
+            self.__get_input()
+        else:
+            for enemy in self.enemy_list:
+                enemy.update()
+            self.player.all_unmoved()
+            self.turn_verify()
         self.mouse.update_mouse()
         self.player.update(self.tile_list, self.enemy_list)
         if self.__ui_b.get_can_see():
@@ -207,6 +213,15 @@ class Game:
                         self.player.clean_selection()
                         if self.__ui_b.get_selected_button() is not None:
                             self.__ui_b.end_arrow()
+
+    def turn_verify(self) -> bool:
+        if not self.player.all_moved():
+            self._turn = True
+
+        else:
+            self._turn = False
+
+        return self._turn
 
     def __pos_verify(self, x: int, y: int) -> bool:
         for i in range(len(self.tile_list)):

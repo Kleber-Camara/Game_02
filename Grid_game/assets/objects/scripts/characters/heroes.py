@@ -79,6 +79,9 @@ class Heroes(pygame.sprite.Sprite):
     def set_y(self, y: int) -> None:
         self._y = y
 
+    def set_moved(self, status: bool) -> None:
+        self._moved = status
+
     def set_move(self, move: int) -> None:
         self._can_move = move
 
@@ -92,6 +95,9 @@ class Heroes(pygame.sprite.Sprite):
         self._present_mana = mana
 
     # GETTERS
+    def get_moved(self) -> bool:
+        return self._moved
+
     def get_move(self) -> int:
         return self._can_move
 

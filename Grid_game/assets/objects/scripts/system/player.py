@@ -15,6 +15,7 @@ class Player:
         self.path = path
 
     def update(self, tiles: list, enemys: list) -> None:
+        can_move = True
         if self.__present_selection is not None:
             self.__arrow.move(self.__present_selection.get_x(), self.__present_selection.get_y() - 10)
         if self.__selected and self.__selected.get_moving():
@@ -100,11 +101,12 @@ class Player:
             self.__selected.set_x(x)
             self.__selected.set_y(y)
             self.__selected.set_moving(False)
+            self.__selected.set_moved(True)
             self.clean_selection()
 
     def verify_selection(self, rect: pygame.rect) -> None:
         for i in range(len(self.__heroes_list)):
-            if self.__heroes_list[i].rect.colliderect(rect):
+            if self.__heroes_list[i].rect.colliderect(rect) and not self.__heroes_list[i].get_moved():
                 if self.__selected:
                     self.__selected = None
                 else:
@@ -148,3 +150,18 @@ class Player:
 
     def get_present_selection(self) -> Heroes:
         return self.__present_selection
+
+    def all_unmoved(self) -> None:
+        for char in self.__heroes_list:
+            char.set_moved(False)
+
+    def all_moved(self) -> bool:
+        count = 0
+        for char in self.__heroes_list:
+            if char.get_moved():
+                count += 1
+                print(count)
+        if count >= len(self.__heroes_list):
+            return True
+        else:
+            return False
