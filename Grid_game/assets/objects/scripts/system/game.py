@@ -183,10 +183,9 @@ class Game:
                             break
                 if event.key == pygame.K_RETURN:
                     if self.__ui_b.get_can_see():
-                        self.player.get_selected().set_y(self.__ui_b.get_move_target_y())
-                        self.player.get_selected().set_x(self.__ui_b.get_move_target_x())
                         self.player.get_selected().set_moving(False)
                         self.__ui_b.change_can_see(False)
+                        self.player.move_hero(self.__ui_b.get_move_target_x(), self.__ui_b.get_move_target_y())
                         self.__ui_b.end_arrow()
                         self.player.clean_selection()
                         break
