@@ -123,7 +123,6 @@ class Player:
     def nextSelection(self, direction: bool) -> None:
         if self.__present_selection is not None:
             for i in range(len(self.__heroes_list)):
-                print(len(self.__heroes_list))
                 if self.__present_selection == self.__heroes_list[i]:
                     if direction:
                         if i+1 >= len(self.__heroes_list) and self.__heroes_list[i].get_moved():
@@ -141,6 +140,8 @@ class Player:
                                     self.__present_selection = self.__heroes_list[i + 1]
                             else:
                                 self.__present_selection = self.__heroes_list[0]
+                                if self.__present_selection.get_moved():
+                                    self.nextSelection(direction)
                             break
                     else:
                         if i-1 < 0 and self.__heroes_list[i].get_moved():
@@ -151,15 +152,20 @@ class Player:
                                 if self.__heroes_list[len(self.__heroes_list) - 1].get_moved():
                                     if i-1 < 0:
                                         self.__present_selection = self.__heroes_list[len(self.__heroes_list)-1]
+                                        if self.__present_selection.get_moved():
+                                            self.nextSelection(direction)
                                     else:
                                         self.__present_selection = self.__heroes_list[i - 1]
                                     if self.__present_selection.get_moved():
                                         self.nextSelection(direction)
                                 else:
                                     self.__present_selection = self.__heroes_list[i - 1]
+                                    if self.__present_selection.get_moved():
+                                        self.nextSelection(direction)
                             else:
-                                print(i)
-                                self.__present_selection = self.__heroes_list[len(self.__heroes_list)]
+                                self.__present_selection = self.__heroes_list[len(self.__heroes_list)-1]
+                                if self.__present_selection.get_moved():
+                                    self.nextSelection(direction)
                             break
         else:
             self.__present_selection = self.__heroes_list[0]
