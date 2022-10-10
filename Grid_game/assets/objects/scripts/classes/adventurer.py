@@ -1,4 +1,5 @@
 from assets.objects.scripts.classes.classe import Classe
+from assets.objects.scripts.skill.skillAtribuition import SkillAtribuition
 
 
 class Adventurer(Classe):
@@ -16,3 +17,4 @@ class Adventurer(Classe):
         self.def_Earth = 45
         self.def_Wind = 45
         self.def_Lightning = 15
+

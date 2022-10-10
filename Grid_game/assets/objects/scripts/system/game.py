@@ -70,17 +70,17 @@ class Game:
                         self.__ui_b.move_target(self.tile_list[i].get_x(), self.tile_list[i].get_y())
 
     def __get_input(self) -> None:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
+        for event in pygame.event.get():    # Recebe os eventos que estão acontecendo no loop do jogo
+            if event.type == pygame.QUIT:   # Verifica se o usuario fechou o jogo e finaliza os processos
+                pygame.quit()               # Fecha a aplicação
                 exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.player.get_selected() is not None:
-                    if self.__ui_b.btns is not None:
-                        for i in range(len(self.__ui_b.btns)):
-                            if self.mouse.rect.colliderect(self.__ui_b.btns[i].rect):
-                                if self.__ui_b.btns[i].name == 'Mover':
-                                    self.player.get_selected().set_moving(True)
+            if event.type == pygame.MOUSEBUTTONDOWN:    # Verifica se os botões do mouse foram pressionados
+                if self.player.get_selected() is not None:  # Verifica se há algum heroi selecionado
+                    if self.__ui_b.btns is not None:    # Verifica se a lista de botões de ações esta vazia
+                        for i in range(len(self.__ui_b.btns)):  # Cria uma lista de botões com as ações do player
+                            if self.mouse.rect.colliderect(self.__ui_b.btns[i].rect):   # Verifica se o mouse esta colidindo com algum botão
+                                if self.__ui_b.btns[i].name == 'Mover':     # Verifica se o nome do botão é mover
+                                    self.player.get_selected().set_moving(True) # Marca o heroi selecionado como um heroi em movimento
                                     self.__ui_b.change_can_see(True)
                     self.player.verify_selection(self.mouse.rect)
                     for i in range(len(self.tile_list)):
@@ -188,6 +188,7 @@ class Game:
                         self.player.move_hero(self.__ui_b.get_move_target_x(), self.__ui_b.get_move_target_y())
                         self.__ui_b.end_arrow()
                         self.player.clean_selection()
+                        self.player.nextSelection(True)
                         break
                     elif self.__ui_b.get_selected_button() is None and self.player.get_selected() is not None:
                         self.__ui_b.navigate_ui(True)
@@ -216,10 +217,8 @@ class Game:
     def turn_verify(self) -> bool:
         if not self.player.all_moved():
             self._turn = True
-
         else:
             self._turn = False
-
         return self._turn
 
     def __pos_verify(self, x: int, y: int) -> bool:

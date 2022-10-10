@@ -31,7 +31,8 @@ class Heroes(pygame.sprite.Sprite):
         self._present_mana = 0
         self._present_health = 0
         self._can_move = 2
-        self._classe = Classe()
+        self._classe = Classe()  # Inicializa a classe com um objeto padrão classe
+        # Variaveis de movimento recebendo false para indicar que não foram movidas
         self._select = False
         self._moved = False
         self._moving = False

@@ -8,6 +8,7 @@ class Skill(pygame.sprite.Sprite):
 
     def __init__(self, spritesheet: str, lv: int, end_time: int) -> None:
         super().__init__()
+        self._id = -1
         self._skils_animation = os.path.join('assets/sprites/skills')
         self._skils_animation = os.path.join(self._skils_animation, spritesheet)
         self._blit(self._skils_animation)

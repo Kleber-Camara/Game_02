@@ -151,7 +151,7 @@ class Player:
                             if i-1 <= 0:
                                 if self.__heroes_list[len(self.__heroes_list) - 1].get_moved():
                                     if i-1 < 0:
-                                        self.__present_selection = self.__heroes_list[len(self.__heroes_list)-1]
+                                        self.__present_selection = self.__heroes_list[len(self.__heroes_list) - 1]
                                         if self.__present_selection.get_moved():
                                             self.nextSelection(direction)
                                     else:
@@ -163,7 +163,7 @@ class Player:
                                     if self.__present_selection.get_moved():
                                         self.nextSelection(direction)
                             else:
-                                self.__present_selection = self.__heroes_list[len(self.__heroes_list)-1]
+                                self.__present_selection = self.__heroes_list[len(self.__heroes_list) - 1]
                                 if self.__present_selection.get_moved():
                                     self.nextSelection(direction)
                             break
