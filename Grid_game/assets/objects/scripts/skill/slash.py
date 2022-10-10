@@ -5,6 +5,7 @@ class Slash(Skill):
 
     def __init__(self, path: str) -> None:
         super().__init__(path, 0, 1)
+        self._id = 1
         self.set_name('Slash')
         self.set_damage(32)
         self.set_mana_cost(0)

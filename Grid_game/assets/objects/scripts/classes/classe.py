@@ -51,3 +51,12 @@ class Classe:
 
     def get_lighting(self) -> int:
         return self._def_Lightning
+
+    def select_skills(self, ids: list) -> list:
+        idlist = []
+        for id in ids:
+            for skill in self._skill_list:
+                if skill.get_id() == id:
+                    idlist.append(skill)
+
+        return idlist

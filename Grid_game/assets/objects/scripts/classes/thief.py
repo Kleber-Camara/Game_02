@@ -17,4 +17,4 @@ class Thief(Classe):
         self.def_Earth = 25
         self.def_Wind = 25
         self.def_Lightning = 10
-        self.skills = SkillAtribuition('thief')
+        self._skill_list = SkillAtribuition('thief').get_Skill_List()

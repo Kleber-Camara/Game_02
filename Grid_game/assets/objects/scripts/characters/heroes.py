@@ -38,7 +38,7 @@ class Heroes(pygame.sprite.Sprite):
         self._moving = False
 
         # SKILLS
-        self.__skills_selected = []
+        self._skills_selected = []
 
     def update_hero(self) -> None:
         self.rect.topleft = self._x, self._y
@@ -59,10 +59,13 @@ class Heroes(pygame.sprite.Sprite):
         self._def_Wind = self._def_Wind + self._classe.get_wind()
         self._def_Lightning = self._def_Lightning + self._classe.get_lighting()
 
-    def set_Skills_list(self, skill: Skill) -> None:
-        if self.__skills_selected is not None:
-            if len(self.__skills_selected) < 4:
-                self.__skills_selected.append(skill)
+    def set_skills_list(self, skills: list) -> None:
+        self._skills_selected = skills
+
+    def set_Skills_inlist(self, skill: Skill) -> None:
+        if self._skills_selected is not None:
+            if len(self._skills_selected) < 4:
+                self._skills_selected.append(skill)
 
     def _blit(self, sprite_path: str) -> None:
         image_path = os.path.join(self._path, sprite_path)

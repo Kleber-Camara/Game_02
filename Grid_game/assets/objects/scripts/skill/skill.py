@@ -60,5 +60,8 @@ class Skill(pygame.sprite.Sprite):
     def get_mana_cost(self) -> int:
         return self._mana_cost
 
+    def get_id(self) -> int:
+        return self._id
+
     def _blit(self, path: str) -> None:
         pass

@@ -11,6 +11,7 @@ class Char1(Heroes):
         self.image = pygame.transform.scale(self.image, (32, 32))
         self.rect = self.image.get_rect(topleft=(self._x, self._y))
         self._classe = Thief()
+        self.set_skills_list(self._classe.select_skills([1]))
         self._get_Atributes()
 
     def update_hero(self) -> None:
