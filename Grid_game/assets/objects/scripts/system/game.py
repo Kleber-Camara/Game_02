@@ -82,6 +82,9 @@ class Game:
                                 if self.__ui_b.btns[i].name == 'Mover':     # Verifica se o nome do botão é mover
                                     self.player.get_selected().set_moving(True) # Marca o heroi selecionado como um heroi em movimento
                                     self.__ui_b.change_can_see(True)
+                                elif self.__ui_b.btns[i].name == 'Atacar':
+                                    self.__ui_b.skills_btns_create(self.player.get_selected().get_skills_list())
+
                     self.player.verify_selection(self.mouse.rect)
                     for i in range(len(self.tile_list)):
                         if self.mouse.rect.colliderect(self.tile_list[i].rect) and self.tile_list[i].get_can_move():

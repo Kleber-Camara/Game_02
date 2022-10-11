@@ -12,6 +12,7 @@ class UiBattle(pygame.sprite.Sprite):
         super().__init__()
         self.player = player
         self.btns = []
+        self.skills_btns = []
         self.__box_action = pygame.Rect(0, 400, (pygame.display.get_surface().get_size()[0]),
                                         (pygame.display.get_surface().get_size()[1]-400))
         self.__selected_btn = None
@@ -42,6 +43,10 @@ class UiBattle(pygame.sprite.Sprite):
         else:
             self.btns.clear()
 
+        if self.skills_btns is not None:
+            for btn in self.skills_btns:
+                btn.render()
+
         for btn in self.btns:
             btn.render()
 
@@ -51,6 +56,14 @@ class UiBattle(pygame.sprite.Sprite):
         if self.__can_see_target:
             self.__move_target.render()
 
+    def skills_btns_create(self, skills: list) -> None:
+        i = 1
+        for btn in skills:
+            if len(btn.get_name()) > 6:
+                b = Button(240, i*410, 120, 30, btn.get_name(), (255, 255, 255), 16)
+            else:
+                b = Button(240, i*410, 120, 30, btn.get_name(), (255, 255, 255), 24)
+            self.skills_btns.append(b)
     def navigate_ui(self, direction: bool) -> None:
 
         if self.__selected_btn is not None:

@@ -158,3 +158,6 @@ class Heroes(pygame.sprite.Sprite):
 
     def get_present_mana(self) -> float:
         return self._present_mana
+
+    def get_skills_list(self) -> list:
+        return self._skills_selected

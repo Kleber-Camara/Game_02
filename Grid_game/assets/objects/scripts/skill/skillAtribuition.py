@@ -1,8 +1,6 @@
-import os.path
-
 from assets.objects.scripts.skill.skill import Skill
 from assets.objects.scripts.skill.slash import Slash
-# from assets.objects.scripts.skill import *
+import os.path
 
 
 class SkillAtribuition:
@@ -14,7 +12,7 @@ class SkillAtribuition:
 
     def __attribuition(self, classe: str) -> None:
         if classe == 'thief':
-            self.__path = os.path.join(self.__path, 'ad.sav')
+            self.__path = os.path.join(self.__path, 'tf.sav')
             db = []
             try:
                 db = open(self.__path, 'r')
