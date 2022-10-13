@@ -6,7 +6,7 @@ import time
 
 class Skill(pygame.sprite.Sprite):
 
-    def __init__(self, spritesheet: str, lv: int, end_time: int) -> None:
+    def __init__(self, spritesheet: str, lv: int, end_time: int, x: int, y: int) -> None:
         super().__init__()
         self._id = -1
         self._skils_animation = os.path.join('assets/sprites/skills')
@@ -22,6 +22,8 @@ class Skill(pygame.sprite.Sprite):
         self._lvl_required = lv
         self._present_time = time.time()
         self._end_time = end_time
+        self._x = x
+        self._y = y
 
     def update_skill(self) -> None:
         if (time.time() - self._present_time) >= self._end_time:

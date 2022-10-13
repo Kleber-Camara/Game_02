@@ -13,6 +13,7 @@ class Tile(pygame.sprite.Sprite):
         self._height = height
         self._name = 'NONE'
         self._can_move = False
+        self._can_atk = False
 
     def update_tile(self, offset: pygame.math.Vector2) -> None:
         pass
@@ -21,6 +22,9 @@ class Tile(pygame.sprite.Sprite):
         pygame.display.get_surface().blit(self.image, self.rect.topleft)
         if self._can_move:
             pygame.draw.rect(pygame.display.get_surface(), (255, 0, 0), (self._x, self._y, self._width, self._height), 3)
+        if self._can_atk:
+            pygame.draw.rect(pygame.display.get_surface(), (255, 255, 255), (self._x, self._y, self._width, self._height),
+                             3)
 
     def get_x(self) -> int:
         return self._x
@@ -31,11 +35,19 @@ class Tile(pygame.sprite.Sprite):
     def get_can_move(self) -> bool:
         return self._can_move
 
+    def get_can_atk(self) -> bool:
+        return self._can_atk
     def set_can_move(self) -> None:
         self._can_move = True
 
     def set_cannot_move(self) -> None:
         self._can_move = False
+
+    def set_cannot_atk(self) -> None:
+        self._can_atk = False
+
+    def set_can_atk(self) -> None:
+        self._can_atk = True
 
     def _blit(self, path: str) -> None:
         new_path = os.path.join(path, 'sprite_sheet_placeholder.png')

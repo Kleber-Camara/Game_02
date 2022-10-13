@@ -1,6 +1,7 @@
 from assets.objects.scripts.ui.selectarrow import SelectArrow
 from assets.objects.scripts.characters.heroes import Heroes
 from assets.objects.scripts.tiles.rock import Rock
+from assets.objects.scripts.skill.skill import Skill
 import pygame
 
 
@@ -194,3 +195,11 @@ class Player:
             return True
         else:
             return False
+
+    def set_floor_target(self, tiles: list, skill: Skill) -> None:
+
+        for tile in tiles:
+            if self.__selected.get_x() >= tile.get_x() >= self.__selected.get_x() - (32 * skill.get_act_range()):
+                tile.set_can_atk()
+
+

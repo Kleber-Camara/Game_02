@@ -23,7 +23,7 @@ class SkillAtribuition:
 
     def __chose_skill(self, id: int) -> Skill:
         if id == 1:
-            return Slash('slash.png')
+            return Slash(0, 0)
 
     def get_Skill_List(self) -> list:
         return self._SkillList

@@ -12,39 +12,41 @@ class UiBattle(pygame.sprite.Sprite):
         super().__init__()
         self.player = player
         self.btns = []
-        self.skills_btns = []
+        self.__skills_btns = []
         self.__box_action = pygame.Rect(0, 400, (pygame.display.get_surface().get_size()[0]),
-                                        (pygame.display.get_surface().get_size()[1]-400))
+                                        (pygame.display.get_surface().get_size()[1] - 400))
         self.__selected_btn = None
         self._arrow = SelectArrow(self.player.path, 0, 0)
         self.__move_target = SelectMove(self.player.path, 0, 0)
         self.__can_see_target = False
         self.__selected_tile = None
+        self.__options_button = Button(760, 0, 40, 40, 'op', (255, 255, 255), (255, 0, 0), 16)
 
-    def draw(self) -> None:
+    def draw(self) -> None:     # Desenha na tela a interface
 
         if self.__selected_btn is not None:
-            self._arrow.move(self.__selected_btn.get_x()-5, self.__selected_btn.get_y()+5)
+            self._arrow.move(self.__selected_btn.get_x() - 5, self.__selected_btn.get_y() + 5)
         pygame.draw.rect(pygame.display.get_surface(), (255, 255, 255), self.__box_action)
         pygame.draw.rect(pygame.display.get_surface(), (0, 0, 0), self.__box_action, 2)
-        pygame.draw.rect(pygame.display.get_surface(), (255, 125, 0), (self.__box_action.x+5,
-                                                                       self.__box_action.y+3, 200,
-                                                                       self.__box_action.height-10), 2)
+        pygame.draw.rect(pygame.display.get_surface(), (255, 125, 0), (self.__box_action.x + 5,
+                                                                       self.__box_action.y + 3, 200,
+                                                                       self.__box_action.height - 10), 2)
         if self.player.get_selected():
             if not self.btns:
-                btn1 = Button(35, 410, 120, 30, 'Mover', (255, 255, 255), 24)
-                btn2 = Button(35, 450, 120, 30, 'Atacar', (255, 255, 255), 24)
-                btn3 = Button(35, 490, 120, 30, 'Itens', (255, 255, 255), 24)
-                btn4 = Button(35, 530, 120, 30, 'Fugir', (255, 255, 255), 24)
+                btn1 = Button(35, 410, 120, 30, 'Mover', (255, 255, 255), (0, 0, 255), 24)
+                btn2 = Button(35, 450, 120, 30, 'Atacar', (255, 255, 255), (0, 0, 255), 24)
+                btn3 = Button(35, 490, 120, 30, 'Itens', (255, 255, 255), (0, 0, 255), 24)
+                btn4 = Button(35, 530, 120, 30, 'Fugir', (255, 255, 255), (0, 0, 255), 24)
                 self.btns.append(btn1)
                 self.btns.append(btn2)
                 self.btns.append(btn3)
                 self.btns.append(btn4)
         else:
+            self.__skills_btns.clear()
             self.btns.clear()
 
-        if self.skills_btns is not None:
-            for btn in self.skills_btns:
+        if self.__skills_btns is not None:
+            for btn in self.__skills_btns:
                 btn.render()
 
         for btn in self.btns:
@@ -56,50 +58,53 @@ class UiBattle(pygame.sprite.Sprite):
         if self.__can_see_target:
             self.__move_target.render()
 
-    def skills_btns_create(self, skills: list) -> None:
+        self.__options_button.render()
+
+    def skills_btns_create(self, skills: list) -> None:  # Cria botões baseados na lista de skills do heroi selecionado
         i = 1
         for btn in skills:
             if len(btn.get_name()) > 6:
-                b = Button(240, i*410, 120, 30, btn.get_name(), (255, 255, 255), 16)
+                b = Button(240, i * 410, 120, 30, btn.get_name(), (255, 255, 255), (0, 0, 255), 16)
             else:
-                b = Button(240, i*410, 120, 30, btn.get_name(), (255, 255, 255), 24)
-            self.skills_btns.append(b)
-    def navigate_ui(self, direction: bool) -> None:
+                b = Button(240, i * 410, 120, 30, btn.get_name(), (255, 255, 255), (0, 0, 255), 24)
+            self.__skills_btns.append(b)
+
+    def navigate_ui(self, direction: bool) -> None:     # Navega entre os botões de ações
 
         if self.__selected_btn is not None:
             for i in range(len(self.btns)):
                 if self.__selected_btn == self.btns[i]:
                     if direction:
-                        if i+1 >= len(self.btns):
+                        if i + 1 >= len(self.btns):
                             self.__selected_btn = self.btns[0]
                             break
                         else:
-                            self.__selected_btn = self.btns[i+1]
+                            self.__selected_btn = self.btns[i + 1]
                             break
                     else:
-                        if i-1 < 0:
-                            self.__selected_btn = self.btns[len(self.btns)-1]
+                        if i - 1 < 0:
+                            self.__selected_btn = self.btns[len(self.btns) - 1]
                             break
                         else:
-                            self.__selected_btn = self.btns[i-1]
+                            self.__selected_btn = self.btns[i - 1]
                             break
         else:
             self.__selected_btn = self.btns[0]
 
-    def select_keyboard_options(self) -> str:
+    def select_keyboard_options(self) -> str:   # Retorna o nome do botao selecionado
         if self.__selected_btn is not None:
             return self.__selected_btn.name
 
-    def end_arrow(self) -> None:
+    def end_arrow(self) -> None:    # Faz a seta de seleção não aparecer mais
         self.__selected_btn = None
         self.__can_see_target = False
 
-    def get_selected_button(self) -> Button:
+    def get_selected_button(self) -> Button:    # retorna o botao selecionado
         return self.__selected_btn
 
     @staticmethod
-    def get_min_max_moveY(tile_list: list) -> tuple:
-        min_y = 9999
+    def get_min_max_moveY(tile_list: list) -> tuple:    # Verifica e retorna o tamanho minimo e maximo da lista de tiles
+        min_y = 99999                                   # no eixo y
         max_y = 0
         for i in range(len(tile_list)):
             if tile_list[i].get_can_move():
@@ -110,8 +115,8 @@ class UiBattle(pygame.sprite.Sprite):
         return min_y, max_y
 
     @staticmethod
-    def get_min_max_moveX(tile_list: list) -> tuple:
-        min_x = 9999
+    def get_min_max_moveX(tile_list: list) -> tuple:    # Verifica e retorna o tamanho maximo e minimo da lista de tiles
+        min_x = 9999                                    # no eixo x
         max_x = 0
         for i in range(len(tile_list)):
             if tile_list[i].get_can_move():
@@ -121,17 +126,23 @@ class UiBattle(pygame.sprite.Sprite):
                     max_x = tile_list[i].get_x()
         return min_x, max_x
 
-    def move_target(self, x: int, y: int) -> None:
+    def move_target(self, x: int, y: int) -> None:  # Movimenta o heroi selecionado para uma determinada area
         self.__move_target.move(x, y)
 
-    def get_move_target_x(self) -> int:
+    def get_move_target_x(self) -> int:     # Retorna o alvo no eixo x, de para onde o jogador quer move-lo
         return self.__move_target.get_x()
 
-    def get_move_target_y(self) -> int:
+    def get_move_target_y(self) -> int:     # Retorna o alvo no eixo y, de para onde o jogador quer move-lo
         return self.__move_target.get_y()
 
-    def change_can_see(self, target: bool) -> None:
+    def change_can_see(self, target: bool) -> None:     # Altera a disponibilidade de visibilidade
         self.__can_see_target = target
 
-    def get_can_see(self) -> bool:
+    def get_can_see(self) -> bool:  # Retorna se esta disponivel para que o jogador veja
         return self.__can_see_target
+
+    def get_skills_b(self) -> list:
+        return self.__skills_btns
+
+    def set_skills_Bfree(self) -> None:
+        self.__skills_btns.clear()
