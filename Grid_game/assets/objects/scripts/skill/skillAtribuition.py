@@ -20,6 +20,37 @@ class SkillAtribuition:
                 print(e)
             for line in db:
                 self._SkillList.append(self.__chose_skill(int(line)))
+            db.close()
+        elif classe == 'adventurer':
+            self.__path = os.path.join(self.__path, 'ad.sav')
+            db = []
+            try:
+                db = open(self.__path, 'r')
+            except Exception as e:
+                print(e)
+            for line in db:
+                self._SkillList.append(self.__chose_skill(int(line)))
+            db.close()
+        elif classe == 'student':
+            self.__path = os.path.join(self.__path, 'sm.sav')
+            db = []
+            try:
+                db = open(self.__path, 'r')
+            except Exception as e:
+                print(e)
+            for line in db:
+                self._SkillList.append(self.__chose_skill(int(line)))
+            db.close
+        elif classe == 'archer':
+            self.__path = os.path.join(self.__path, 'ac.sav')
+            db = []
+            try:
+                db = open(self.__path, 'r')
+            except Exception as e:
+                print(e)
+            for line in db:
+                self._SkillList.append(self.__chose_skill(int(line)))
+            db.close()
 
     def __chose_skill(self, id: int) -> Skill:
         if id == 1:

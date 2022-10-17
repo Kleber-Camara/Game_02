@@ -17,7 +17,6 @@ class Classe:
         self._def_Lightning = 0
         self._skill_list = []
         self._path = os.path.join('assets/objects/scripts/')
-        #self._skill_list.append(Slash())
 
     def get_health(self) -> float:
         return self._health
@@ -54,9 +53,10 @@ class Classe:
 
     def select_skills(self, ids: list) -> list:
         idlist = []
-        for id in ids:
+
+        for id_skill in ids:
             for skill in self._skill_list:
-                if skill.get_id() == id:
+                if skill.get_id() == id_skill:
                     idlist.append(skill)
 
         return idlist

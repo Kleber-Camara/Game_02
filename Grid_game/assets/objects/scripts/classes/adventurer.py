@@ -17,4 +17,4 @@ class Adventurer(Classe):
         self._def_Earth = 45
         self._def_Wind = 45
         self._def_Lightning = 15
-
+        self._skill_list = SkillAtribuition('adventurer').get_Skill_List()
