@@ -1,7 +1,7 @@
 from assets.objects.scripts.ui.selectarrow import SelectArrow
 from assets.objects.scripts.characters.heroes import Heroes
-from assets.objects.scripts.tiles.rock import Rock
 from assets.objects.scripts.skill.skill import Skill
+from assets.objects.scripts.tiles.rock import Rock
 import pygame
 
 
@@ -16,9 +16,11 @@ class Player:
         self.path = path
 
     def update(self, tiles: list, enemys: list) -> None:
+
         can_move = True
         if self.__present_selection is not None:
             self.__arrow.move(self.__present_selection.get_x(), self.__present_selection.get_y() - 10)
+
         if self.__selected and self.__selected.get_moving():
             for i in range(len(tiles)):
                 if self.__setting_tile_status(self.__selected.get_x(), self.__selected.get_y(), tiles[i].get_x(),
@@ -38,6 +40,9 @@ class Player:
         else:
             for i in range(len(tiles)):
                 tiles[i].set_cannot_move()
+
+        self.setting_tiles_not_atk(tiles)
+
         for i in range(len(self.__heroes_list)):
             self.__heroes_list[i].update_hero()
 
@@ -68,6 +73,11 @@ class Player:
         if len(self.__heroes_list) <= 4:
             self.__heroes_list.append(hero)
 
+    def setting_tiles_not_atk(self, tiles: list) -> None:
+        if self.__selected is not None and not self.__selected.get_atk_status():
+            for tile in tiles:
+                tile.set_cannot_atk()
+
     def clean_selection(self) -> None:
         self.__selected = None
 
@@ -76,7 +86,7 @@ class Player:
             for i in range(len(self.__heroes_list)):
                 if self.__present_selection == self.__heroes_list[i]:
                     if direction:
-                        if i+1 >= len(self.__heroes_list) and self.__heroes_list[i].get_moved():
+                        if i + 1 >= len(self.__heroes_list) and self.__heroes_list[i].get_moved():
                             self.__present_selection = self.__heroes_list[0]
                             break
                         else:
@@ -95,13 +105,13 @@ class Player:
                                     self.nextSelection(direction)
                             break
                     else:
-                        if i-1 < 0 and self.__heroes_list[i].get_moved():
+                        if i - 1 < 0 and self.__heroes_list[i].get_moved():
                             self.__present_selection = self.__heroes_list[len(self.__heroes_list) - 1]
                             break
                         else:
-                            if i-1 <= 0:
+                            if i - 1 <= 0:
                                 if self.__heroes_list[len(self.__heroes_list) - 1].get_moved():
-                                    if i-1 < 0:
+                                    if i - 1 < 0:
                                         self.__present_selection = self.__heroes_list[len(self.__heroes_list) - 1]
                                         if self.__present_selection.get_moved():
                                             self.nextSelection(direction)
@@ -140,7 +150,6 @@ class Player:
         for char in self.__heroes_list:
             if char.get_moved():
                 count += 1
-                print(count)
         if count >= len(self.__heroes_list):
             return True
         else:

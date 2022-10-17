@@ -36,6 +36,7 @@ class Heroes(pygame.sprite.Sprite):
         self._select = False
         self._moved = False
         self._moving = False
+        self._atacking = False
 
         # SKILLS
         self._skills_selected = []
@@ -51,6 +52,7 @@ class Heroes(pygame.sprite.Sprite):
         self._dodge = self._dodge + self._classe.get_dodge()
         self._max_mana = self._max_mana + self._classe.get_mana()
         self._damage = self._damage + self._classe.get_damage()
+        print(self._damage)
         self._defense = self._defense + self._classe.get_defense()
         self._speed = self._speed + self._classe.get_speed()
         self._def_Fire = self._def_Fire + self._classe.get_fire()
@@ -97,6 +99,9 @@ class Heroes(pygame.sprite.Sprite):
 
     def set_present_mana(self, mana: float) -> None:
         self._present_mana = mana
+
+    def set_atacking(self, status: bool) -> None:
+        self._atacking = status
 
     # GETTERS
     def get_moved(self) -> bool:
@@ -161,3 +166,6 @@ class Heroes(pygame.sprite.Sprite):
 
     def get_skills_list(self) -> list:
         return self._skills_selected
+
+    def get_atk_status(self) -> bool:
+        return self._atacking

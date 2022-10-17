@@ -145,4 +145,12 @@ class UiBattle(pygame.sprite.Sprite):
         return self.__skills_btns
 
     def set_skills_Bfree(self) -> None:
-        self.__skills_btns.clear()
+        if self.__skills_btns is not None:
+            self.__skills_btns.clear()
+
+    def end_ui(self) -> None:
+        self.btns.clear()
+        if self.__selected_btn is not None:
+            self.__selected_btn = None
+        #if self.btns is not None:
+        self.set_skills_Bfree()

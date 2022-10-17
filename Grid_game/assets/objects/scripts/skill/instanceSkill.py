@@ -7,6 +7,6 @@ class InstanceSkills:
     def __init__(self, name: str) -> None:
         self.__name = name
 
-    def instanceSkill(self) -> Skill:
+    def instanceSkill(self, x: int, y: int) -> Skill:
         if self.__name == 'Slash':
-            return Slash(0, 0)
+            return Slash(x, y)

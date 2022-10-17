@@ -50,6 +50,7 @@ class Enemy(pygame.sprite.Sprite):
 
     def set_max_health(self, health: int) -> None:
         self._max_health = health
+        self.set_present_health(health)
 
     def set_present_health(self, health: int) -> None:
         self._present_health = health
@@ -69,5 +70,22 @@ class Enemy(pygame.sprite.Sprite):
     def get_x(self) -> int:
         return self._x
 
+    def get_present_health(self) -> int:
+        return self._present_health
+
     def get_y(self) -> int:
         return self._y
+
+    def make_damage(self, damage: int, type: str) -> None:
+        if type == 'FISICAL':
+            self._present_health -= (damage - self._def)
+        elif type == 'FIRE':
+            self._present_health -= (damage - self._def_fire)
+        elif type == 'WATER':
+            self._present_health -= (damage - self._def_water)
+        elif type == 'WIND':
+            self._present_health -= (damage - self._def_wind)
+        elif type == 'EARTH':
+            self._present_health -= (damage - self._def_earth)
+        elif type == 'LIGHTNING':
+            self._present_health -= (damage - self._def_lightning)

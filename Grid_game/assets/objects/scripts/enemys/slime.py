@@ -11,6 +11,7 @@ class Slime(Enemy):
         self.rect = self.image.get_rect(topleft=(x, y))
         self._atk = False
         self._x, self._y = x, y
+        self.set_max_health(80)
 
     def render(self) -> None:
         if not self.get_atk():
@@ -23,6 +24,7 @@ class Slime(Enemy):
 
     def update(self) -> None:
         print("Slime andando")
+        print(self.get_present_health())
         super().update()
 
     def get_atk(self) -> bool:

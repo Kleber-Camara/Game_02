@@ -77,6 +77,8 @@ class Game:
                         self.__ui_b.move_target(self.__tile_list[i].get_x(), self.__tile_list[i].get_y())
         if self.__skill is not None:
             self.__skill.update_skill()
+            if self.__skill.get_destruction():
+                self.__skill = None
 
     def __get_input(self) -> None:
         for event in pygame.event.get():    # Recebe os eventos que estão acontecendo no loop do jogo
@@ -97,8 +99,9 @@ class Game:
                                     self.__ui_b.skills_btns_create(self.__player.get_selected().get_skills_list())
                         for btn in self.__ui_b.get_skills_b():
                             if self.__mouse.rect.colliderect(btn.get_rect()):
-                                self.__player.set_floor_target(self.__tile_list, InstanceSkills(btn.get_name()).instanceSkill())
-                                #self.skill = InstanceSkills(btn.name).instanceSkill()
+                                self.__player.get_selected().set_atacking(True)
+                                self.__player.set_floor_target(self.__tile_list,
+                                                               InstanceSkills(btn.get_name()).instanceSkill(0, 0))
 
                     self.__player.verify_selection(self.__mouse.rect)
                     for i in range(len(self.__tile_list)):
@@ -107,6 +110,18 @@ class Game:
                                 if self.__player.get_selected().get_moving():
                                     self.__player.move_hero(self.__tile_list[i].get_x(), self.__tile_list[i].get_y())
                                     self.__ui_b.end_arrow()
+                        if self.__mouse.rect.colliderect(self.__tile_list[i].rect) and self.__tile_list[i].get_can_atk():
+                            if self.__player.get_selected() is not None:
+                                if self.__player.get_selected().get_atk_status():
+                                    self.__skill = InstanceSkills(btn.get_name()).instanceSkill(
+                                        self.__tile_list[i].get_x(), self.__tile_list[i].get_y())
+                                    self.__player.get_selected().set_atacking(False)
+                                    self.__player.setting_tiles_not_atk(self.__tile_list)
+                                    self.__ui_b.end_arrow()
+                                    self.__ui_b.end_ui()
+                                    self.__player.get_selected().set_moved(True)
+                                    self.__calculate_damage()
+                                    self.__player.clean_selection()
                 else:
                     self.__player.verify_selection(self.__mouse.rect)
             if event.type == pygame.KEYDOWN:
@@ -216,7 +231,7 @@ class Game:
                     else:
                         self.__player.real_select()
                         if self.__ui_b.get_selected_button() is not None:
-                            if self.__ui_b.get_selected_button().name == 'Mover':
+                            if self.__ui_b.get_selected_button().get_name() == 'Mover':
                                 self.__ui_b.change_can_see(True)
                                 self.__ui_b.move_target(self.__player.get_selected().get_x(),
                                                         self.__player.get_selected().get_y())
@@ -251,6 +266,22 @@ class Game:
         if self.__player.get_selected() is not None:
             self.__player.get_selected().set_moving(status)  # Marca o heroi selecionado como um heroi em movimento
             self.__ui_b.change_can_see(status)
+
+    def get_collide_detection(self, rect1: pygame.rect, rect2: pygame.rect) -> bool:
+        if rect1.colliderect(rect2):
+            return True
+        else:
+            return False
+
+    def __calculate_damage(self) -> None:
+        if self.__skill is not None:
+            for enemy_collide in self.__enemy_list:
+                if self.get_collide_detection(self.__skill.rect, enemy_collide.rect):
+                    if self.__skill.get_can_damage():
+                        self.__skill.set_damage_status(False)
+                        if self.__player.get_selected() is not None:
+                            print(self.__player.get_selected().get_damage())
+                            enemy_collide.make_damage(self.__skill.get_damage() + self.__player.get_selected().get_damage(), self.__skill.get_type())
 
     def __get_paths(self) -> None:
         self.__assets_path = os.path.join('assets')
