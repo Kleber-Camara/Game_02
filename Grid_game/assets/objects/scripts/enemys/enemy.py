@@ -14,7 +14,6 @@ class Enemy(pygame.sprite.Sprite):
         self._atk = 0
         self._def = 0
         self._dodge = 0
-        self._speed = 0
         self._def_fire = 0
         self._def_water = 0
         self._def_wind = 0
@@ -66,6 +65,24 @@ class Enemy(pygame.sprite.Sprite):
 
     def set_def(self, defense: int) -> None:
         self._def = defense
+
+    def set_dodge(self, dodge: int) -> None:
+        self._dodge = dodge
+
+    def set_fire_def(self, fire: int) -> None:
+        self._def_fire = fire
+
+    def set_water_def(self, water: int) -> None:
+        self._def_water = water
+
+    def set_wind_def(self, wind: int) -> None:
+        self._def_wind = wind
+
+    def set_earth_def(self, earth: int) -> None:
+        self._def_earth = earth
+
+    def set_lightning_def(self, light: int) -> None:
+        self._def_lightning = light
 
     def get_x(self) -> int:
         return self._x

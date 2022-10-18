@@ -61,24 +61,28 @@ class Game:
         pygame.display.update()
 
     def __game_update(self) -> None:
-        if self.__turn_verify():
-            self.__get_input()
-        else:
-            for enemy in self.__enemy_list:
-                enemy.update()
-            self.__player.all_unmoved()
-            self.__turn_verify()
-        self.__mouse.update_mouse()
-        self.__player.update(self.__tile_list, self.__enemy_list)
-        if self.__ui_b.get_can_see():
-            for i in range(len(self.__tile_list)):
-                if self.__mouse.rect.colliderect(self.__tile_list[i]):
-                    if self.__tile_list[i].get_can_move():
-                        self.__ui_b.move_target(self.__tile_list[i].get_x(), self.__tile_list[i].get_y())
-        if self.__skill is not None:
-            self.__skill.update_skill()
-            if self.__skill.get_destruction():
-                self.__skill = None
+        if self.__status['ingame'] == True:
+            if self.__turn_verify():
+                self.__get_input()
+            else:
+                for enemy in self.__enemy_list:
+                    enemy.update()
+                self.__player.all_unmoved()
+                self.__turn_verify()
+            self.__mouse.update_mouse()
+            self.__player.update(self.__tile_list, self.__enemy_list)
+            if self.__ui_b.get_can_see():
+                for i in range(len(self.__tile_list)):
+                    if self.__mouse.rect.colliderect(self.__tile_list[i]):
+                        if self.__tile_list[i].get_can_move():
+                            self.__ui_b.move_target(self.__tile_list[i].get_x(), self.__tile_list[i].get_y())
+            if self.__skill is not None:
+                self.__skill.update_skill()
+                if self.__skill.get_destruction():
+                    self.__skill = None
+            for enemy_s in self.__enemy_list:
+                if enemy_s.get_present_health() <= 0:
+                    self.__enemy_list.remove(enemy_s)
 
     def __get_input(self) -> None:
         for event in pygame.event.get():    # Recebe os eventos que estão acontecendo no loop do jogo

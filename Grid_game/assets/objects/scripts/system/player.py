@@ -156,13 +156,13 @@ class Player:
             return False
 
     def set_floor_target(self, tiles: list, skill: Skill) -> None:
-
-        for tile in tiles:
-            if self.__setting_tile_status(self.__selected.get_x(), self.__selected.get_y(), tile.get_x(), tile.get_y(),
-                                          skill.get_act_range()):
-                tile.set_can_atk()
-            else:
-                tile.set_cannot_atk()
+        if self.__selected is not None and skill is not None:
+            for tile in tiles:
+                if self.__setting_tile_status(self.__selected.get_x(), self.__selected.get_y(), tile.get_x(), tile.get_y(),
+                                              skill.get_act_range()):
+                    tile.set_can_atk()
+                else:
+                    tile.set_cannot_atk()
 
     def __setting_tile_status(self, x: int, y: int, x1: int, y1: int, range_action: int) -> bool:
 

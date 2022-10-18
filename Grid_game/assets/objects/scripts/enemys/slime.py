@@ -12,6 +12,15 @@ class Slime(Enemy):
         self._atk = False
         self._x, self._y = x, y
         self.set_max_health(80)
+        self.set_max_mana(40)
+        self.set_atk(25)
+        self.set_def(20)
+        self.set_dodge(35)
+        self.set_lightning_def(10)
+        self.set_fire_def(20)
+        self.set_wind_def(20)
+        self.set_earth_def(15)
+        self.set_water_def(15)
 
     def render(self) -> None:
         if not self.get_atk():

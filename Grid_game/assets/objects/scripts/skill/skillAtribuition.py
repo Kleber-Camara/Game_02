@@ -1,3 +1,4 @@
+from assets.objects.scripts.skill.fireBall import FireBall
 from assets.objects.scripts.skill.skill import Skill
 from assets.objects.scripts.skill.slash import Slash
 import os.path
@@ -52,9 +53,12 @@ class SkillAtribuition:
                 self._SkillList.append(self.__chose_skill(int(line)))
             db.close()
 
-    def __chose_skill(self, id: int) -> Skill:
-        if id == 1:
+    @staticmethod
+    def __chose_skill(id_s: int) -> Skill:
+        if id_s == 1:
             return Slash(0, 0)
+        elif id_s == 2:
+            return FireBall(0, 0)
 
     def get_Skill_List(self) -> list:
         return self._SkillList
