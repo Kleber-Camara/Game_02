@@ -164,6 +164,10 @@ class Player:
                 else:
                     tile.set_cannot_atk()
 
+    def set_floor_cannot_atk(self, tiles: list) -> None:
+        for tile in tiles:
+            tile.set_cannot_atk()
+            tile.render()
     def __setting_tile_status(self, x: int, y: int, x1: int, y1: int, range_action: int) -> bool:
 
         if (x >= x1 >= x - (32 * range_action)) and y <= y1 <= y + (32 * range_action):

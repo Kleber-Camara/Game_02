@@ -2,6 +2,8 @@ from assets.objects.scripts.ui.selectarrow import SelectArrow
 from assets.objects.scripts.ui.selectmove import SelectMove
 from assets.objects.scripts.ui.button import Button
 from assets.objects.scripts.system.player import Player
+from assets.objects.scripts.enemys.enemy import Enemy
+from assets.objects.scripts.ui.healthBar import HealthBar
 import pygame.sprite
 import pygame
 
@@ -21,6 +23,9 @@ class UiBattle(pygame.sprite.Sprite):
         self.__can_see_target = False
         self.__selected_tile = None
         self.__options_button = Button(760, 0, 40, 40, 'op', (255, 255, 255), (255, 0, 0), 16)
+        self.__max_enemy_hp = None
+        self._present_enemy_hp = None
+
 
     def draw(self) -> None:     # Desenha na tela a interface
 
@@ -57,6 +62,10 @@ class UiBattle(pygame.sprite.Sprite):
 
         if self.__can_see_target:
             self.__move_target.render()
+        if self.__max_enemy_hp is not None:
+            self.__max_enemy_hp.render()
+        if self._present_enemy_hp is not None:
+            self._present_enemy_hp.render()
 
         self.__options_button.render()
 
@@ -152,5 +161,15 @@ class UiBattle(pygame.sprite.Sprite):
         self.btns.clear()
         if self.__selected_btn is not None:
             self.__selected_btn = None
-        #if self.btns is not None:
         self.set_skills_Bfree()
+
+    def draw_enemy_life(self, rect1: pygame.rect, enemy: Enemy) -> None:
+        if rect1.colliderect(enemy.rect):
+            self.__max_enemy_hp = HealthBar(600, 420, 16, 100, 'MAX')
+            self._present_enemy_hp = HealthBar(600, 420, 16, (enemy.get_present_health() / enemy.get_max_health()) * 100, 'other')
+        else:
+            self.erase_enemy_bar()
+
+    def erase_enemy_bar(self) -> None:
+        self.__max_enemy_hp = None
+        self._present_enemy_hp = None

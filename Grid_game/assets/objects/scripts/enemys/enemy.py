@@ -87,6 +87,9 @@ class Enemy(pygame.sprite.Sprite):
     def get_x(self) -> int:
         return self._x
 
+    def get_max_health(self) -> int:
+        return self._max_health
+
     def get_present_health(self) -> int:
         return self._present_health
 

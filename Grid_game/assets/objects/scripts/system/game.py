@@ -46,7 +46,7 @@ class Game:
 
     def __game_render(self) -> None:
         self.__display.fill((0, 0, 0))
-        if self.__status['ingame'] == True:
+        if self.__status['ingame']:
             for n in range(len(self.__tile_list)):
                 self.__tile_list[n].render()
             if self.__enemy_list is not None:
@@ -56,12 +56,15 @@ class Game:
             if self.__skill is not None:
                 self.__skill.render()
             self.__ui_b.draw()
-
+            for enemy in self.__enemy_list:
+                self.__ui_b.draw_enemy_life(self.__mouse.rect, enemy)
+            if not self.__enemy_list:
+                self.__ui_b.erase_enemy_bar()
         self.__mouse.render()
         pygame.display.update()
 
     def __game_update(self) -> None:
-        if self.__status['ingame'] == True:
+        if self.__status['ingame']:
             if self.__turn_verify():
                 self.__get_input()
             else:
@@ -95,9 +98,9 @@ class Game:
                         for i in range(len(self.__ui_b.btns)):  # Cria uma lista de botões com as ações do player
                             if self.__mouse.rect.colliderect(self.__ui_b.btns[i].get_rect()):   # Verifica se o __mouse esta colidindo com algum botão
                                 if self.__ui_b.btns[i].get_name() == 'Mover':     # Verifica se o nome do botão é mover
+                                    self.__changeButtonMove(True)
                                     if self.__ui_b.get_skills_b():
                                         self.__ui_b.set_skills_Bfree()
-                                    self.__changeButtonMove(True)
                                 elif self.__ui_b.btns[i].get_name() == 'Atacar':
                                     self.__changeButtonMove(False)
                                     self.__ui_b.skills_btns_create(self.__player.get_selected().get_skills_list())
@@ -270,6 +273,9 @@ class Game:
         if self.__player.get_selected() is not None:
             self.__player.get_selected().set_moving(status)  # Marca o heroi selecionado como um heroi em movimento
             self.__ui_b.change_can_see(status)
+            self.__player.get_selected().set_atacking(not status)
+            if status:
+                self.__player.setting_tiles_not_atk(self.__tile_list)
 
     def get_collide_detection(self, rect1: pygame.rect, rect2: pygame.rect) -> bool:
         if rect1.colliderect(rect2):
