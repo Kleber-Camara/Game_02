@@ -6,6 +6,7 @@ class Slime(Enemy):
     def __init__(self, x: int, y: int) -> None:
         super().__init__()
         self._blit('slime_green.png')
+        self._name = 'Green Slime'
         self.index = 0
         self.image = self._animation[self.index]
         self.rect = self.image.get_rect(topleft=(x, y))

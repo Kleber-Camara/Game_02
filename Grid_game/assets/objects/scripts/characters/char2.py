@@ -6,7 +6,7 @@ import pygame.transform
 class Char2(Heroes):
 
     def __init__(self, path: str) -> None:
-        super().__init__('Name2', 3, path)
+        super().__init__('Char2', 3, path)
         self.set_x(0)
         self.set_y(32)
         self._blit('magic_place_holder.png')

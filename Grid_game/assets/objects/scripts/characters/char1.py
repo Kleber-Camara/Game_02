@@ -6,7 +6,7 @@ import pygame
 class Char1(Heroes):
 
     def __init__(self, path: str) -> None:
-        super().__init__('nome', 2, path)
+        super().__init__('Char1', 2, path)
         self._blit('thief_place_holder.png')
         self.image = pygame.transform.scale(self.image, (32, 32))
         self.rect = self.image.get_rect(topleft=(self._x, self._y))

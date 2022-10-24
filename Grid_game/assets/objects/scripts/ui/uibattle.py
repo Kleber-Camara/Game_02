@@ -4,6 +4,8 @@ from assets.objects.scripts.ui.button import Button
 from assets.objects.scripts.system.player import Player
 from assets.objects.scripts.enemys.enemy import Enemy
 from assets.objects.scripts.ui.healthBar import HealthBar
+from assets.objects.scripts.ui.label import Label
+from assets.objects.scripts.characters.heroes import Heroes
 import pygame.sprite
 import pygame
 
@@ -23,8 +25,20 @@ class UiBattle(pygame.sprite.Sprite):
         self.__can_see_target = False
         self.__selected_tile = None
         self.__options_button = Button(760, 0, 40, 40, 'op', (255, 255, 255), (255, 0, 0), 16)
+        # Enemys info
         self.__max_enemy_hp = None
         self._present_enemy_hp = None
+        self.__label_enemy = None
+        self.__label_enemy_hp = None
+
+        # Player info
+        self.__hero_max_hp = None
+        self.__hero_present_hp = None
+        self.__hero_label_name = None
+        self.__hero_label_hp = None
+        self.__hero_max_mana = None
+        self.__hero_present_mana = None
+        self.__hero_label_mana = None
 
 
     def draw(self) -> None:     # Desenha na tela a interface
@@ -62,10 +76,27 @@ class UiBattle(pygame.sprite.Sprite):
 
         if self.__can_see_target:
             self.__move_target.render()
+        # RENDER ENEMY STUFF
         if self.__max_enemy_hp is not None:
             self.__max_enemy_hp.render()
         if self._present_enemy_hp is not None:
             self._present_enemy_hp.render()
+        if self.__label_enemy is not None:
+            self.__label_enemy.render()
+        if self.__label_enemy_hp is not None:
+            self.__label_enemy_hp.render()
+
+        # RENDER PLAYER STUFF
+        if self.__hero_label_name is not None and self.__hero_max_hp is not None and self.__hero_present_hp is not None:
+            self.__hero_label_name.render()
+            self.__hero_max_hp.render()
+            self.__hero_present_hp.render()
+        if self.__hero_label_hp is not None and self.__hero_max_mana is not None and self.__hero_present_mana is not None:
+            self.__hero_label_hp.render()
+            self.__hero_max_mana.render()
+            self.__hero_present_mana.render()
+        if self.__hero_label_mana is not None:
+            self.__hero_label_mana.render()
 
         self.__options_button.render()
 
@@ -166,10 +197,29 @@ class UiBattle(pygame.sprite.Sprite):
     def draw_enemy_life(self, rect1: pygame.rect, enemy: Enemy) -> None:
         if rect1.colliderect(enemy.rect):
             self.__max_enemy_hp = HealthBar(600, 420, 16, 100, 'MAX')
-            self._present_enemy_hp = HealthBar(600, 420, 16, (enemy.get_present_health() / enemy.get_max_health()) * 100, 'other')
+            self._present_enemy_hp = HealthBar(600, 420, 16, (enemy.get_present_health() / enemy.get_max_health()) * 100,'other')
+            self.__label_enemy = Label(enemy.get_name(), 600, 400, 40, 40, (0, 0, 0), 14)
+            self.__label_enemy_hp = Label('HP: {}/{}'.format(enemy.get_present_health(), enemy.get_max_health()), 600,
+                                          430, 40, 40, (0, 0, 0), 14)
         else:
             self.erase_enemy_bar()
+
+    def draw_player_info(self, hero: Heroes) -> None:
+        self.__hero_label_name = Label(hero.get_name(), 450, 400, 40, 40, (0, 0, 0), 14)
+        self.__hero_max_hp = HealthBar(450, 420, 16, 100, 'MAX')
+        self.__hero_present_hp = HealthBar(450, 420, 16, (hero.get_present_health() / hero.get_max_health()) * 100, 'other')
+        self.__hero_label_hp = Label('HP: {}/{}'.format(hero.get_present_health(), hero.get_max_health()), 450, 430, 40,
+                                     40, (0, 0, 0), 14)
+        self.__hero_max_mana = HealthBar(450, 450, 16, 100, 'MAX')
+        self.__hero_present_mana = HealthBar(450, 450, 16, (hero.get_present_mana() / hero.get_max_mana()) * 100, 'MANA')
+        self.__hero_label_mana = Label('MP: {}/{}'.format(hero.get_present_mana(), hero.get_max_mana()), 450, 460, 40,
+                                       40, (0, 0, 0), 14)
 
     def erase_enemy_bar(self) -> None:
         self.__max_enemy_hp = None
         self._present_enemy_hp = None
+        self.__label_enemy = None
+        self.__label_enemy_hp = None
+
+    def erase_player_info(self) -> None:
+        pass

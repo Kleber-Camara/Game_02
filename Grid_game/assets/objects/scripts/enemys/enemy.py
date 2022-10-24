@@ -6,6 +6,7 @@ class Enemy(pygame.sprite.Sprite):
 
     def __init__(self) -> None:
         super().__init__()
+        self._name = 'standart'
         self._lv = 0
         self._max_health = 0
         self._present_health = 0
@@ -90,11 +91,17 @@ class Enemy(pygame.sprite.Sprite):
     def get_max_health(self) -> int:
         return self._max_health
 
+    def get_dodge(self) -> int:
+        return self._dodge
+
     def get_present_health(self) -> int:
         return self._present_health
 
     def get_y(self) -> int:
         return self._y
+
+    def get_name(self) -> str:
+        return self._name
 
     def make_damage(self, damage: int, type: str) -> None:
         if type == 'FISICAL':

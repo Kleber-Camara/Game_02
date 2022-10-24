@@ -49,10 +49,11 @@ class Heroes(pygame.sprite.Sprite):
 
     def _get_Atributes(self) -> None:
         self._max_health = self._max_health + self._classe.get_health()
+        self._present_health = self._max_health
         self._dodge = self._dodge + self._classe.get_dodge()
         self._max_mana = self._max_mana + self._classe.get_mana()
+        self._present_mana = self._max_mana
         self._damage = self._damage + self._classe.get_damage()
-        print(self._damage)
         self._defense = self._defense + self._classe.get_defense()
         self._speed = self._speed + self._classe.get_speed()
         self._def_Fire = self._def_Fire + self._classe.get_fire()

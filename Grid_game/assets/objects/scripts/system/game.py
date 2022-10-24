@@ -1,3 +1,5 @@
+import random
+
 from assets.objects.scripts.skill.instanceSkill import InstanceSkills
 from assets.objects.scripts.ui.selectmove import SelectMove
 from assets.objects.scripts.characters.char1 import Char1
@@ -131,6 +133,7 @@ class Game:
                                     self.__player.clean_selection()
                 else:
                     self.__player.verify_selection(self.__mouse.rect)
+                    self.__ui_b.draw_player_info(self.__player.get_selected())
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_s or event.key == pygame.K_DOWN:
                     if self.__ui_b.get_can_see():
@@ -291,7 +294,8 @@ class Game:
                         self.__skill.set_damage_status(False)
                         if self.__player.get_selected() is not None:
                             print(self.__player.get_selected().get_damage())
-                            enemy_collide.make_damage(self.__skill.get_damage() + self.__player.get_selected().get_damage(), self.__skill.get_type())
+                            if random.randrange(1, 100) <= enemy_collide.get_dodge():
+                                enemy_collide.make_damage(self.__skill.get_damage() + self.__player.get_selected().get_damage(), self.__skill.get_type())
 
     def __get_paths(self) -> None:
         self.__assets_path = os.path.join('assets')

@@ -6,6 +6,8 @@ class HealthBar(pygame.sprite.Sprite):
     def __init__(self, x: int, y: int, width: int, height: int, type: str) -> None:
         if type == 'MAX':
             self.__blit('assets/sprites/ui/max_health.png')
+        elif type == 'MANA':
+            self.__blit('assets/sprites/ui/present_mana.png')
         else:
             self.__blit('assets/sprites/ui/present_health.png')
         self.image = self.sprite.subsurface((0, 0), (128, 32))
