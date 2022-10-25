@@ -68,6 +68,8 @@ class Player:
                 else:
                     self.__selected = self.__heroes_list[i]
                     self.__present_selection = self.__heroes_list[i]
+            elif self.__heroes_list[i].rect.colliderect(rect) and self.__heroes_list[i] != self.__selected:
+                self.__selected = None
 
     def append_group(self, hero: Heroes) -> None:
         if len(self.__heroes_list) <= 4:

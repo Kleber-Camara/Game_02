@@ -11,5 +11,6 @@ class Slash(Skill):
         self.set_mana_cost(0)
         self.set_range_atk(1)
         self.set_act_range(1)
+        self.set_hit(15)
         self.set_type('FISICAL')
 

@@ -70,6 +70,9 @@ class Heroes(pygame.sprite.Sprite):
             if len(self._skills_selected) < 4:
                 self._skills_selected.append(skill)
 
+    def mana_cost_calculate(self, mana: int) -> None:
+        self._present_mana -= mana
+
     def _blit(self, sprite_path: str) -> None:
         image_path = os.path.join(self._path, sprite_path)
         try:

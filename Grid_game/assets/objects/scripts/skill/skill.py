@@ -18,6 +18,7 @@ class Skill(pygame.sprite.Sprite):
         self._range_atk = 0
         self._act_range = 0
         self._mana_cost = 0
+        self._hit = 0
         self._type_skill = 'STANDART'
         self._lvl_required = lv
         self._present_time = 0
@@ -38,6 +39,9 @@ class Skill(pygame.sprite.Sprite):
 
     def set_name(self, name: str) -> None:
         self._name = name
+
+    def set_hit(self, hit: int) -> None:
+        self._hit = hit
 
     def set_type(self, type: str) -> None:
         self._type_skill = type
@@ -68,6 +72,9 @@ class Skill(pygame.sprite.Sprite):
 
     def get_act_range(self) -> int:
         return self._act_range
+
+    def get_hit(self) -> int:
+        return self._hit
 
     def get_mana_cost(self) -> int:
         return self._mana_cost

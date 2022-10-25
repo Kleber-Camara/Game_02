@@ -205,15 +205,16 @@ class UiBattle(pygame.sprite.Sprite):
             self.erase_enemy_bar()
 
     def draw_player_info(self, hero: Heroes) -> None:
-        self.__hero_label_name = Label(hero.get_name(), 450, 400, 40, 40, (0, 0, 0), 14)
-        self.__hero_max_hp = HealthBar(450, 420, 16, 100, 'MAX')
-        self.__hero_present_hp = HealthBar(450, 420, 16, (hero.get_present_health() / hero.get_max_health()) * 100, 'other')
-        self.__hero_label_hp = Label('HP: {}/{}'.format(hero.get_present_health(), hero.get_max_health()), 450, 430, 40,
-                                     40, (0, 0, 0), 14)
-        self.__hero_max_mana = HealthBar(450, 450, 16, 100, 'MAX')
-        self.__hero_present_mana = HealthBar(450, 450, 16, (hero.get_present_mana() / hero.get_max_mana()) * 100, 'MANA')
-        self.__hero_label_mana = Label('MP: {}/{}'.format(hero.get_present_mana(), hero.get_max_mana()), 450, 460, 40,
-                                       40, (0, 0, 0), 14)
+        if hero is not None:
+            self.__hero_label_name = Label(hero.get_name(), 450, 400, 40, 40, (0, 0, 0), 14)
+            self.__hero_max_hp = HealthBar(450, 420, 16, 100, 'MAX')
+            self.__hero_present_hp = HealthBar(450, 420, 16, (hero.get_present_health() / hero.get_max_health()) * 100, 'other')
+            self.__hero_label_hp = Label('HP: {}/{}'.format(hero.get_present_health(), hero.get_max_health()), 450, 430, 40,
+                                         40, (0, 0, 0), 14)
+            self.__hero_max_mana = HealthBar(450, 450, 16, 100, 'MAX')
+            self.__hero_present_mana = HealthBar(450, 450, 16, (hero.get_present_mana() / hero.get_max_mana()) * 100, 'MANA')
+            self.__hero_label_mana = Label('MP: {}/{}'.format(hero.get_present_mana(), hero.get_max_mana()), 450, 460, 40,
+                                           40, (0, 0, 0), 14)
 
     def erase_enemy_bar(self) -> None:
         self.__max_enemy_hp = None
@@ -222,4 +223,10 @@ class UiBattle(pygame.sprite.Sprite):
         self.__label_enemy_hp = None
 
     def erase_player_info(self) -> None:
-        pass
+        self.__hero_max_hp = None
+        self.__hero_present_hp = None
+        self.__hero_label_name = None
+        self.__hero_label_hp = None
+        self.__hero_max_mana = None
+        self.__hero_present_mana = None
+        self.__hero_label_mana = None
