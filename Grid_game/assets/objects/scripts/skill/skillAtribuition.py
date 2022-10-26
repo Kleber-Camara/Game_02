@@ -58,7 +58,7 @@ class SkillAtribuition:
         if id_s == 1:
             return Slash(0, 0)
         elif id_s == 2:
-            return FireBall(0, 0)
+            return FireBall(0, 0, 0, 0)
 
     def get_Skill_List(self) -> list:
         return self._SkillList

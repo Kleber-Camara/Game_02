@@ -40,8 +40,17 @@ class UiBattle(pygame.sprite.Sprite):
         self.__hero_present_mana = None
         self.__hero_label_mana = None
 
+        # General info
+        self.__label_damage_info = None
+        self.__damage_durability = 0
+
 
     def draw(self) -> None:     # Desenha na tela a interface
+
+        if self.__label_damage_info is not None:
+            self.__label_damage_info.update()
+            self.__label_damage_info.render()
+            self.__damage_durability += 0.3
 
         if self.__selected_btn is not None:
             self._arrow.move(self.__selected_btn.get_x() - 5, self.__selected_btn.get_y() + 5)
@@ -97,6 +106,10 @@ class UiBattle(pygame.sprite.Sprite):
             self.__hero_present_mana.render()
         if self.__hero_label_mana is not None:
             self.__hero_label_mana.render()
+
+        if self.__damage_durability >= 10:
+            self.__damage_durability = 0
+            self.__label_damage_info = None
 
         self.__options_button.render()
 
@@ -215,6 +228,12 @@ class UiBattle(pygame.sprite.Sprite):
             self.__hero_present_mana = HealthBar(450, 450, 16, (hero.get_present_mana() / hero.get_max_mana()) * 100, 'MANA')
             self.__hero_label_mana = Label('MP: {}/{}'.format(hero.get_present_mana(), hero.get_max_mana()), 450, 460, 40,
                                            40, (0, 0, 0), 14)
+
+    def draw_damage(self, damage: int, x: int, y: int) -> None:
+        if damage <= 0:
+            self.__label_damage_info = Label('MISS', x, y, 40, 40, (255, 255, 255), 12)
+        else:
+            self.__label_damage_info = Label('{}'.format(damage), x, y, 40, 40, (255, 255, 255), 12)
 
     def erase_enemy_bar(self) -> None:
         self.__max_enemy_hp = None

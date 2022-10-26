@@ -1,15 +1,14 @@
-import random
-
 from assets.objects.scripts.skill.instanceSkill import InstanceSkills
 from assets.objects.scripts.ui.selectmove import SelectMove
 from assets.objects.scripts.characters.char1 import Char1
 from assets.objects.scripts.characters.char2 import Char2
-from assets.objects.scripts.ui.uibattle import UiBattle
 from assets.objects.scripts.system.player import Player
+from assets.objects.scripts.ui.uibattle import UiBattle
 from assets.objects.scripts.system.mouse import Mouse
 from assets.objects.scripts.system.newMap import Map
 import pygame.display
 import os.path
+import random
 
 
 class Game:
@@ -39,6 +38,7 @@ class Game:
         self.__can_see_arrow = False
         self.__tile_select = None
         self.__skill = None
+
 
     def game_loop(self) -> None:
         while self.__run:
@@ -83,11 +83,16 @@ class Game:
                             self.__ui_b.move_target(self.__tile_list[i].get_x(), self.__tile_list[i].get_y())
             if self.__skill is not None:
                 self.__skill.update_skill()
+                if not self.__skill.get_ranged():
+                    self.__calculate_damage()
                 if self.__skill.get_destruction():
                     self.__skill = None
             for enemy_s in self.__enemy_list:
                 if enemy_s.get_present_health() <= 0:
                     self.__enemy_list.remove(enemy_s)
+            if self.__skill is not None:
+                for enemy in self.__enemy_list:
+                    self.__skill.set_action_collide(enemy.rect)
 
     def __get_input(self) -> None:
         for event in pygame.event.get():    # Recebe os eventos que estão acontecendo no loop do jogo
@@ -110,7 +115,7 @@ class Game:
                             if self.__mouse.rect.colliderect(btn.get_rect()):
                                 self.__player.get_selected().set_atacking(True)
                                 self.__player.set_floor_target(self.__tile_list,
-                                                               InstanceSkills(btn.get_name()).instanceSkill(0, 0))
+                                                               InstanceSkills(btn.get_name()).instanceSkill(0, 0, 0, 0))
 
                     self.__player.verify_selection(self.__mouse.rect)
                     if self.__player.get_selected() is None:
@@ -127,14 +132,13 @@ class Game:
                             if self.__player.get_selected() is not None:
                                 if self.__player.get_selected().get_atk_status():
                                     self.__skill = InstanceSkills(btn.get_name()).instanceSkill(
-                                        self.__tile_list[i].get_x(), self.__tile_list[i].get_y())
+                                        self.__tile_list[i].get_x(), self.__tile_list[i].get_y(),
+                                        self.__player.get_selected().get_x(), self.__player.get_selected().get_y())
                                     self.__player.get_selected().set_atacking(False)
                                     self.__player.setting_tiles_not_atk(self.__tile_list)
                                     self.__ui_b.end_arrow()
                                     self.__ui_b.end_ui()
                                     self.__player.get_selected().set_moved(True)
-                                    self.__calculate_damage()
-                                    self.__player.clean_selection()
                                     self.__ui_b.erase_player_info()
                 else:
                     self.__player.verify_selection(self.__mouse.rect)
@@ -299,10 +303,19 @@ class Game:
                         self.__skill.set_damage_status(False)
                         if self.__player.get_selected() is not None:
                             self.__player.get_selected().mana_cost_calculate(self.__skill.get_mana_cost())
-                            if random.randrange(1, 100) <= (enemy_collide.get_dodge() - self.__skill.get_hit()):
+                            if random.randrange(1, 100) <= (enemy_collide.get_dodge() + self.__skill.get_hit()):
                                 enemy_collide.make_damage(
                                     self.__skill.get_damage() + self.__player.get_selected().get_damage(),
                                     self.__skill.get_type())
+                                self.__ui_b.draw_damage(
+                                    (self.__skill.get_damage() + self.__player.get_selected().get_damage())
+                                    - enemy_collide.get_witch_def(self.__skill.get_type()), enemy_collide.get_x(),
+                                    enemy_collide.get_y())
+                            else:
+                                self.__ui_b.draw_damage((self.__skill.get_damage() + self.__player.get_selected().get_damage())
+                                                        - enemy_collide.get_witch_def(self.__skill.get_type()), enemy_collide.get_x(),
+                                                        enemy_collide.get_y())
+                            self.__player.clean_selection()
 
     def __get_paths(self) -> None:
         self.__assets_path = os.path.join('assets')

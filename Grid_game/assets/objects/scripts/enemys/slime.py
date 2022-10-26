@@ -24,17 +24,19 @@ class Slime(Enemy):
         self.set_water_def(15)
 
     def render(self) -> None:
-        if not self.get_atk():
+        if not self.get_attacking():
             if self.index > len(self._animation) - 1:
                 self.index = 0
             self.index += 0.3
             self.image = self._animation[int(self.index)]
             self.rect.topleft = (self._x, self._y)
+            #print(self._present_health)
+
         super().render()
 
     def update(self) -> None:
         print("Slime andando")
-        print(self.get_present_health())
+        #print(self.get_present_health())
         super().update()
 
     def get_atk(self) -> bool:

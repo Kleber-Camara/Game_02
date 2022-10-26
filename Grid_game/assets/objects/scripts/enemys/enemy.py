@@ -22,6 +22,7 @@ class Enemy(pygame.sprite.Sprite):
         self._def_lightning = 0
         self._animation = []
         self._moved = True
+        self._attacking = False
         self._x = 0
         self._y = 0
 
@@ -45,6 +46,8 @@ class Enemy(pygame.sprite.Sprite):
     def set_moved(self) -> None:
         self._moved = True
 
+    def set_attacking(self, atk: bool) -> None:
+        self._attacking = atk
     def unset_moved(self) -> None:
         self._moved = False
 
@@ -100,8 +103,25 @@ class Enemy(pygame.sprite.Sprite):
     def get_y(self) -> int:
         return self._y
 
+    def get_attacking(self) -> bool:
+        return self._attacking
+
     def get_name(self) -> str:
         return self._name
+
+    def get_witch_def(self, type: str) -> int:
+        if type == 'FISICAL':
+            return self._def
+        elif type == 'FIRE':
+            return self._def_fire
+        elif type == 'WATER':
+            return self._def_water
+        elif type == 'WIND':
+            return self._def_wind
+        elif type == 'EARTH':
+            return self._def_earth
+        elif type == 'LIGHTNING':
+            return self._def_lightning
 
     def make_damage(self, damage: int, type: str) -> None:
         if type == 'FISICAL':
