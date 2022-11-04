@@ -15,14 +15,16 @@ class Game:
 
     def __init__(self) -> None:
         self.__get_paths()
-        self.__sWidth, self.__sHeight = 800, 600
+        self.__sWidth, self.__sHeight = 1366, 720  # 800, 600
         self.__display = pygame.display.set_mode((self.__sWidth, self.__sHeight))
+        # self.__display = pygame.display.set_mode((self.__sWidth, self.__sHeight), pygame.FULLSCREEN)
+
         self.__clock = pygame.time.Clock()
         self.__run = True
         self.__game_mode = {'battle': True, 'management': False}
         self.__status = {'ingame': True, 'menu': False}
         self.__turn = False
-
+        self.__friendly = False
         # variables to test
         self.__char = Char1(self.__sprites_path)
         self.__char2 = Char2(self.__sprites_path)
@@ -38,7 +40,6 @@ class Game:
         self.__can_see_arrow = False
         self.__tile_select = None
         self.__skill = None
-
 
     def game_loop(self) -> None:
         while self.__run:
@@ -95,16 +96,17 @@ class Game:
                     self.__skill.set_action_collide(enemy.rect)
 
     def __get_input(self) -> None:
-        for event in pygame.event.get():    # Recebe os eventos que estão acontecendo no loop do jogo
-            if event.type == pygame.QUIT:   # Verifica se o usuario fechou o jogo e finaliza os processos
-                pygame.quit()               # Fecha a aplicação
+        for event in pygame.event.get():  # Recebe os eventos que estão acontecendo no loop do jogo
+            if event.type == pygame.QUIT:  # Verifica se o usuario fechou o jogo e finaliza os processos
+                pygame.quit()  # Fecha a aplicação
                 exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:    # Verifica se os botões do __mouse foram pressionados
+            if event.type == pygame.MOUSEBUTTONDOWN:  # Verifica se os botões do __mouse foram pressionados
                 if self.__player.get_selected() is not None:  # Verifica se há algum heroi selecionado
-                    if self.__ui_b.btns is not None:    # Verifica se a lista de botões de ações esta vazia
+                    if self.__ui_b.btns is not None:  # Verifica se a lista de botões de ações esta vazia
                         for i in range(len(self.__ui_b.btns)):  # Cria uma lista de botões com as ações do player
-                            if self.__mouse.rect.colliderect(self.__ui_b.btns[i].get_rect()):   # Verifica se o __mouse esta colidindo com algum botão
-                                if self.__ui_b.btns[i].get_name() == 'Mover':     # Verifica se o nome do botão é mover
+                            if self.__mouse.rect.colliderect(self.__ui_b.btns[
+                                                                 i].get_rect()):  # Verifica se o __mouse esta colidindo com algum botão
+                                if self.__ui_b.btns[i].get_name() == 'Mover':  # Verifica se o nome do botão é mover
                                     self.__changeButtonMove(True)
                                     if self.__ui_b.get_skills_b():
                                         self.__ui_b.set_skills_Bfree()
@@ -114,34 +116,69 @@ class Game:
                         for btn in self.__ui_b.get_skills_b():
                             if self.__mouse.rect.colliderect(btn.get_rect()):
                                 self.__player.get_selected().set_atacking(True)
+                                self.__friendly = True
+                                print(btn.get_name())
                                 self.__player.set_floor_target(self.__tile_list,
                                                                InstanceSkills(btn.get_name()).instanceSkill(0, 0, 0, 0))
-
-                    self.__player.verify_selection(self.__mouse.rect)
+                                self.skill_btn = btn
+                                break
+                    if not self.__friendly:
+                        self.__player.verify_selection(self.__mouse.rect)
                     if self.__player.get_selected() is None:
                         self.__ui_b.erase_player_info()
 
                     for i in range(len(self.__tile_list)):
-                        if self.__mouse.rect.colliderect(self.__tile_list[i].rect) and self.__tile_list[i].get_can_move():
+                        if self.__mouse.rect.colliderect(self.__tile_list[i].rect) and self.__tile_list[
+                            i].get_can_move():
                             if self.__player.get_selected() is not None:
                                 if self.__player.get_selected().get_moving():
                                     self.__player.move_hero(self.__tile_list[i].get_x(), self.__tile_list[i].get_y())
                                     self.__ui_b.end_arrow()
                                     self.__ui_b.erase_player_info()
-                        if self.__mouse.rect.colliderect(self.__tile_list[i].rect) and self.__tile_list[i].get_can_atk():
+                        if self.__mouse.rect.colliderect(self.__tile_list[i].rect) and self.__tile_list[
+                            i].get_can_atk():
                             if self.__player.get_selected() is not None:
                                 if self.__player.get_selected().get_atk_status():
-                                    self.__skill = InstanceSkills(btn.get_name()).instanceSkill(
-                                        self.__tile_list[i].get_x(), self.__tile_list[i].get_y(),
-                                        self.__player.get_selected().get_x(), self.__player.get_selected().get_y())
-                                    self.__player.get_selected().set_atacking(False)
-                                    self.__player.setting_tiles_not_atk(self.__tile_list)
-                                    self.__ui_b.end_arrow()
-                                    self.__ui_b.end_ui()
-                                    self.__player.get_selected().set_moved(True)
-                                    self.__ui_b.erase_player_info()
+                                    if self.enemy_verify(self.__mouse.rect) or self.__player.get_collide_hero_list(
+                                            self.__mouse.rect):
+                                        if self.enemy_verify(self.__mouse.rect) and\
+                                                self.skill_btn.get_target() == 'ENEMY':
+                                            self.__skill = InstanceSkills(self.skill_btn.get_name()).instanceSkill(
+                                                self.__tile_list[i].get_x(), self.__tile_list[i].get_y(),
+                                                self.__player.get_selected().get_x(),
+                                                self.__player.get_selected().get_y())
+                                            self.__friendly = False
+                                        elif self.__player.get_collide_hero_list(self.__mouse.rect) and\
+                                                self.skill_btn.get_target() == 'ALLY':
+                                            hero = self.__player.get_hero_collide(self.__mouse.rect)
+                                            self.__skill = InstanceSkills(self.skill_btn.get_name()).instanceSkill(
+                                                hero.get_x(), hero.get_y(),
+                                                self.__player.get_selected().get_x(),
+                                                self.__player.get_selected().get_y())
+                                        else:
+                                            break
+                                        if not self.__player.get_selected().get_present_mana() < self.__skill.get_mana_cost():
+                                            self.__player.get_selected().set_atacking(False)
+                                            self.__player.setting_tiles_not_atk(self.__tile_list)
+                                            self.__ui_b.end_arrow()
+                                            self.__ui_b.end_ui()
+                                            self.__player.get_selected().set_moved(True)
+                                            self.__ui_b.erase_player_info()
+                                        else:
+                                            self.__ui_b.draw_message('Out of mana!',
+                                                                     self.__player.get_selected().get_x() + 20,
+                                                                     self.__player.get_selected().get_y() + 20)
+                                            self.__skill = None
+                                            self.__player.get_selected().set_atacking(False)
+                                            self.__player.setting_tiles_not_atk(self.__tile_list)
+                                            self.__ui_b.end_arrow()
+                                            self.__ui_b.end_ui()
+                                            self.__player.get_selected().set_moved(True)
+                                            self.__ui_b.erase_player_info()
+
                 else:
-                    self.__player.verify_selection(self.__mouse.rect)
+                    if not self.__friendly:
+                        self.__player.verify_selection(self.__mouse.rect)
                     self.__ui_b.draw_player_info(self.__player.get_selected())
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_s or event.key == pygame.K_DOWN:
@@ -289,7 +326,8 @@ class Game:
             if status:
                 self.__player.setting_tiles_not_atk(self.__tile_list)
 
-    def get_collide_detection(self, rect1: pygame.rect, rect2: pygame.rect) -> bool:
+    @staticmethod
+    def get_collide_detection(rect1: pygame.rect, rect2: pygame.rect) -> bool:
         if rect1.colliderect(rect2):
             return True
         else:
@@ -297,25 +335,46 @@ class Game:
 
     def __calculate_damage(self) -> None:
         if self.__skill is not None:
-            for enemy_collide in self.__enemy_list:
-                if self.get_collide_detection(self.__skill.rect, enemy_collide.rect):
+            if self.__skill.get_target() == 'ENEMY':
+                for enemy_collide in self.__enemy_list:
+                    if self.get_collide_detection(self.__skill.rect, enemy_collide.rect):
+                        if self.__skill.get_can_damage():
+                            self.__skill.set_damage_status(False)
+                            if self.__player.get_selected() is not None:
+                                self.__player.get_selected().mana_cost_calculate(self.__skill.get_mana_cost())
+                                if random.randrange(1, 100) <= (enemy_collide.get_dodge() + self.__skill.get_hit()):
+                                    enemy_collide.make_damage(
+                                        (self.__skill.get_damage() + self.__player.get_selected().get_damage()),
+                                        self.__skill.get_type())
+                                    self.__ui_b.draw_damage(
+                                        (self.__skill.get_damage() + self.__player.get_selected().get_damage())
+                                        - enemy_collide.get_witch_def(self.__skill.get_type()), enemy_collide.get_x(),
+                                        enemy_collide.get_y())
+                                else:
+                                    self.__ui_b.draw_damage(0, enemy_collide.get_x(), enemy_collide.get_y())
+                                    self.__friendly = False
+                                self.__player.clean_selection()
+            else:
+                hero = self.__player.get_hero_collide(self.__mouse.rect)
+                if hero is not None:
                     if self.__skill.get_can_damage():
                         self.__skill.set_damage_status(False)
                         if self.__player.get_selected() is not None:
                             self.__player.get_selected().mana_cost_calculate(self.__skill.get_mana_cost())
-                            if random.randrange(1, 100) <= (enemy_collide.get_dodge() + self.__skill.get_hit()):
-                                enemy_collide.make_damage(
-                                    self.__skill.get_damage() + self.__player.get_selected().get_damage(),
-                                    self.__skill.get_type())
-                                self.__ui_b.draw_damage(
-                                    (self.__skill.get_damage() + self.__player.get_selected().get_damage())
-                                    - enemy_collide.get_witch_def(self.__skill.get_type()), enemy_collide.get_x(),
-                                    enemy_collide.get_y())
-                            else:
-                                self.__ui_b.draw_damage((self.__skill.get_damage() + self.__player.get_selected().get_damage())
-                                                        - enemy_collide.get_witch_def(self.__skill.get_type()), enemy_collide.get_x(),
-                                                        enemy_collide.get_y())
+                            if self.__skill.get_buff() is not None:
+                                hero.add_buff(self.__skill.get_buff())
+                            if self.__skill.get_damage() > 0:
+                                hero.set_present_health(self.__skill.get_damage())
+                                self.__friendly = False
                             self.__player.clean_selection()
+
+
+    def enemy_verify(self, rect: pygame.rect) -> bool:
+        for enemy in self.__enemy_list:
+            if self.get_collide_detection(rect, enemy.rect):
+                return True
+
+        return False
 
     def __get_paths(self) -> None:
         self.__assets_path = os.path.join('assets')

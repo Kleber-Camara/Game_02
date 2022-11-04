@@ -71,6 +71,19 @@ class Player:
             elif self.__heroes_list[i].rect.colliderect(rect) and self.__heroes_list[i] != self.__selected:
                 self.__selected = None
 
+    def get_collide_hero_list(self, rect: pygame.rect) -> bool:
+        for hero in self.__heroes_list:
+            if rect.colliderect(hero.rect):
+                return True
+
+        return False
+
+    def get_hero_collide(self, rect: pygame.rect) -> Heroes:
+        for hero in self.__heroes_list:
+            if rect.colliderect(hero.rect):
+                return hero
+        return None
+
     def append_group(self, hero: Heroes) -> None:
         if len(self.__heroes_list) <= 4:
             self.__heroes_list.append(hero)

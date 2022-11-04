@@ -13,5 +13,6 @@ class Char2(Heroes):
         self.image = pygame.transform.scale(self.image, (32, 32))
         self.rect = self.image.get_rect(topleft=(self.get_x(), self.get_y()))
         self._classe = MagicStudent()
-        self.set_skills_list(self._classe.select_skills([2]))
+        self.set_skills_list(self._classe.select_skills([2, 3]))
         self._get_Atributes()
+        print(self.get_skills_list())

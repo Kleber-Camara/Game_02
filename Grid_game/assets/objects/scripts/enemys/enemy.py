@@ -125,14 +125,32 @@ class Enemy(pygame.sprite.Sprite):
 
     def make_damage(self, damage: int, type: str) -> None:
         if type == 'FISICAL':
-            self._present_health -= (damage - self._def)
+            if (damage - self._def) <= 0:
+                self._present_health -= 0
+            else:
+                self._present_health -= (damage - self._def)
         elif type == 'FIRE':
-            self._present_health -= (damage - self._def_fire)
+            if (damage - self._def_fire) <= 0:
+                self._present_health -= 0
+            else:
+                self._present_health -= (damage - self._def_fire)
         elif type == 'WATER':
-            self._present_health -= (damage - self._def_water)
+            if (damage - self._def_water) <= 0:
+                self._present_health -= 0
+            else:
+                self._present_health -= (damage - self._def_water)
         elif type == 'WIND':
-            self._present_health -= (damage - self._def_wind)
+            if (damage - self._def_wind) <= 0:
+                self._present_health -= 0
+            else:
+                self._present_health -= (damage - self._def_wind)
         elif type == 'EARTH':
-            self._present_health -= (damage - self._def_earth)
+            if (damage - self._def_earth) <= 0:
+                self._present_health -= 0
+            else:
+                self._present_health -= (damage - self._def_earth)
         elif type == 'LIGHTNING':
-            self._present_health -= (damage - self._def_lightning)
+            if (damage - self._def_lightning) <= 0:
+                self._present_health -= 0
+            else:
+                self._present_health -= (damage - self._def_lightning)

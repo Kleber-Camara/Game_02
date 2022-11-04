@@ -1,3 +1,4 @@
+from assets.objects.scripts.skill.skill import Skill
 import os.path
 
 
@@ -51,12 +52,14 @@ class Classe:
     def get_lighting(self) -> int:
         return self._def_Lightning
 
-    def select_skills(self, ids: list) -> list:
+    def select_skills(self, ids: list[int]) -> list[Skill]:
         idlist = []
 
         for id_skill in ids:
+            print(id_skill)
             for skill in self._skill_list:
                 if skill.get_id() == id_skill:
                     idlist.append(skill)
 
+        print(idlist)
         return idlist

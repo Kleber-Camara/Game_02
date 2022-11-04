@@ -1,6 +1,7 @@
+from assets.objects.scripts.skill.shortHeal import ShortHeal
+from assets.objects.scripts.skill.fireBall import FireBall
 from assets.objects.scripts.skill.slash import Slash
 from assets.objects.scripts.skill.skill import Skill
-from assets.objects.scripts.skill.fireBall import FireBall
 
 
 class InstanceSkills:
@@ -13,3 +14,5 @@ class InstanceSkills:
             return Slash(x, y)
         elif self.__name == 'Fire Ball':
             return FireBall(x, y, player_x, player_y)
+        elif self.__name == 'Short Heal':
+            return ShortHeal(x, y)

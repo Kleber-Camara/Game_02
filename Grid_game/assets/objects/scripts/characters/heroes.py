@@ -1,5 +1,6 @@
 from assets.objects.scripts.classes.classe import Classe
 from assets.objects.scripts.skill.skill import Skill
+from assets.objects.scripts.buffs.buff import Buff
 import pygame.sprite
 import os.path
 
@@ -40,6 +41,8 @@ class Heroes(pygame.sprite.Sprite):
 
         # SKILLS
         self._skills_selected = []
+        # BUFFS
+        self._buffs_list = []
 
     def update_hero(self) -> None:
         self.rect.topleft = self._x, self._y
@@ -62,7 +65,7 @@ class Heroes(pygame.sprite.Sprite):
         self._def_Wind = self._def_Wind + self._classe.get_wind()
         self._def_Lightning = self._def_Lightning + self._classe.get_lighting()
 
-    def set_skills_list(self, skills: list) -> None:
+    def set_skills_list(self, skills: list[Skill]) -> None:
         self._skills_selected = skills
 
     def set_Skills_inlist(self, skill: Skill) -> None:
@@ -72,6 +75,9 @@ class Heroes(pygame.sprite.Sprite):
 
     def mana_cost_calculate(self, mana: int) -> None:
         self._present_mana -= mana
+
+    def add_buff(self, buff: Buff) -> None:
+        self._buffs_list.append(buff)
 
     def _blit(self, sprite_path: str) -> None:
         image_path = os.path.join(self._path, sprite_path)
@@ -99,7 +105,10 @@ class Heroes(pygame.sprite.Sprite):
         self._moving = moving
 
     def set_present_health(self, health: float) -> None:
-        self._present_health = health
+        if health + self._present_health > self._max_health:
+            self._present_health = self._max_health
+        else:
+            self._present_health += health
 
     def set_present_mana(self, mana: float) -> None:
         self._present_mana = mana
@@ -168,7 +177,7 @@ class Heroes(pygame.sprite.Sprite):
     def get_present_mana(self) -> float:
         return self._present_mana
 
-    def get_skills_list(self) -> list:
+    def get_skills_list(self) -> list[Skill]:
         return self._skills_selected
 
     def get_atk_status(self) -> bool:

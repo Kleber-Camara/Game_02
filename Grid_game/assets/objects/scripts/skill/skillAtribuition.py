@@ -1,6 +1,7 @@
 from assets.objects.scripts.skill.fireBall import FireBall
 from assets.objects.scripts.skill.skill import Skill
 from assets.objects.scripts.skill.slash import Slash
+from assets.objects.scripts.skill.shortHeal import ShortHeal
 import os.path
 
 
@@ -59,6 +60,8 @@ class SkillAtribuition:
             return Slash(0, 0)
         elif id_s == 2:
             return FireBall(0, 0, 0, 0)
+        elif id_s == 3:
+            return ShortHeal(0, 0)
 
     def get_Skill_List(self) -> list:
         return self._SkillList

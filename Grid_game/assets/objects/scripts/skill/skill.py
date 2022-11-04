@@ -1,9 +1,11 @@
-import os.path
+from assets.objects.scripts.buffs.buff import Buff
 import pygame.sprite
+import os.path
 
 
 class Skill(pygame.sprite.Sprite):
-    def __init__(self, spritesheet: str, lv: int, end_time: int, x: int, y: int, player_x: int, player_y: int, ranged: bool) -> None:
+    def __init__(self, spritesheet: str, lv: int, end_time: int, x: int, y: int, player_x: int, player_y: int,
+                 ranged: bool, passive: bool) -> None:
         super().__init__()
         self._id = -1
         self._skils_animation = os.path.join('assets/sprites/skills')
@@ -25,6 +27,9 @@ class Skill(pygame.sprite.Sprite):
         self._destrutible = False
         self._can_damage = True
         self._ranged = ranged
+        self._passive = passive
+        self._target = 'ENEMY'
+        self._buff = None
         if self._ranged:
             self._x = player_x
             self._y = player_y
@@ -43,20 +48,40 @@ class Skill(pygame.sprite.Sprite):
                 self._destrutible = True
         else:
             if self._end_y <= self._y and self._end_x <= self._x:
-                self._x -= 0.8
-                self._y -= 0.8
+                if self._end_y == self._y:
+                    self._x -= 3
+                elif self._end_x == self._x:
+                    self._y -= 2.2
+                else:
+                    self._x -= 3
+                    self._y -= 2.2
                 self.rect.topleft = (int(self._x), int(self._y))
             elif self._end_y >= self._y and self._end_x <= self._x:
-                self._x -= 0.3
-                self._y += 0.3
+                if self._end_y == self._y:
+                    self._x -= 3
+                elif self._end_x == self._x:
+                    self._y += 2.2
+                else:
+                    self._x -= 3
+                    self._y += 1.7
                 self.rect.topleft = (int(self._x), int(self._y))
             elif self._end_y <= self._y and self._end_x >= self._x:
-                self._x += 0.3
-                self._y -= 0.3
+                if self._end_y == self._y:
+                    self._x += 3
+                elif self._end_x == self._x:
+                    self._y -= 2.2
+                else:
+                    self._x += 3
+                    self._y -= 2.2
                 self.rect.topleft = (int(self._x), int(self._y))
             else:
-                self._x += 3
-                self._y += 2.2
+                if self._end_y == self._y:
+                    self._x += 3
+                elif self._end_x == self._x:
+                    self._y += 2.2
+                else:
+                    self._x += 3
+                    self._y += 2.2
                 self.rect.topleft = (int(self._x), int(self._y))
 
 
@@ -72,11 +97,17 @@ class Skill(pygame.sprite.Sprite):
     def set_type(self, type: str) -> None:
         self._type_skill = type
 
+    def set_buff(self, buff: Buff) -> None:
+        self._buff = buff
+
     def set_damage(self, damage: int) -> None:
         self._damage = damage
 
     def set_range_atk(self, range_atk: int) -> None:
         self._range_atk = range_atk
+
+    def set_target(self, target: str) -> None:
+        self._target = target
 
     def set_mana_cost(self, cost: int) -> None:
         self._mana_cost = cost
@@ -96,8 +127,14 @@ class Skill(pygame.sprite.Sprite):
     def get_range(self) -> int:
         return self._range_atk
 
+    def get_target(self) -> str:
+        return self._target
+
     def get_act_range(self) -> int:
         return self._act_range
+
+    def get_buff(self) -> Buff:
+        return self._buff
 
     def get_hit(self) -> int:
         return self._hit
@@ -116,6 +153,7 @@ class Skill(pygame.sprite.Sprite):
 
     def get_type(self) -> str:
         return self._type_skill
+
     def get_x(self) -> int:
         return int(self._x)
 
@@ -124,6 +162,7 @@ class Skill(pygame.sprite.Sprite):
 
     def get_y(self) -> int:
         return int(self._y)
+
     def _blit(self, path: str) -> None:
         try:
             self.sprite = pygame.image.load(path).convert_alpha()
