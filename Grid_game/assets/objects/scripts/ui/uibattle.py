@@ -4,9 +4,9 @@ from assets.objects.scripts.characters.heroes import Heroes
 from assets.objects.scripts.ui.healthBar import HealthBar
 from assets.objects.scripts.system.player import Player
 from assets.objects.scripts.enemys.enemy import Enemy
+from assets.objects.scripts.skill.skill import Skill
 from assets.objects.scripts.ui.button import Button
 from assets.objects.scripts.ui.label import Label
-from assets.objects.scripts.skill.skill import Skill
 import pygame.sprite
 import pygame
 

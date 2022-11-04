@@ -2,8 +2,8 @@ from assets.objects.scripts.skill.instanceSkill import InstanceSkills
 from assets.objects.scripts.ui.selectmove import SelectMove
 from assets.objects.scripts.characters.char1 import Char1
 from assets.objects.scripts.characters.char2 import Char2
-from assets.objects.scripts.system.player import Player
 from assets.objects.scripts.ui.uibattle import UiBattle
+from assets.objects.scripts.system.player import Player
 from assets.objects.scripts.system.mouse import Mouse
 from assets.objects.scripts.system.newMap import Map
 import pygame.display

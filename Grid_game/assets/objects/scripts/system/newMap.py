@@ -1,8 +1,8 @@
 from assets.objects.scripts.tiles.ground import Ground
 from assets.objects.scripts.tiles.poison import Poison
+from assets.objects.scripts.enemys.slime import Slime
 from assets.objects.scripts.tiles.water import Water
 from assets.objects.scripts.tiles.rock import Rock
-from assets.objects.scripts.enemys.slime import Slime
 from typing import Any
 from PIL import Image
 import os.path

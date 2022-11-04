@@ -1,5 +1,5 @@
-from assets.objects.scripts.classes.classe import Classe
 from assets.objects.scripts.skill.skillAtribuition import SkillAtribuition
+from assets.objects.scripts.classes.classe import Classe
 
 
 class Adventurer(Classe):

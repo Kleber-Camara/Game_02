@@ -1,7 +1,7 @@
+from assets.objects.scripts.skill.shortHeal import ShortHeal
 from assets.objects.scripts.skill.fireBall import FireBall
 from assets.objects.scripts.skill.skill import Skill
 from assets.objects.scripts.skill.slash import Slash
-from assets.objects.scripts.skill.shortHeal import ShortHeal
 import os.path
 
 
